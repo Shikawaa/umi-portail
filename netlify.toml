@@ -4,5 +4,13 @@
 [build]
   command = "npm run build"
 
+[build.environment]
+  # These two NEXT_PUBLIC_* values are public by design: Next.js inlines them
+  # into the browser/edge bundle, and Supabase's URL + anon key are meant to be
+  # shipped to clients (access is protected server-side by Row Level Security).
+  # We whitelist them for the secrets scanner while keeping it ON for real
+  # secrets such as RESEND_API_KEY.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
