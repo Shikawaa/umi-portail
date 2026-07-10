@@ -1,0 +1,362 @@
+{
+  "metadata": {
+    "title": "UMi Practitioner Portal",
+    "description": "UMi practitioner portal: invite your patients and follow their engagement."
+  },
+  "common": {
+    "appName": "UMi",
+    "appNameFull": "UMi Practitioner Portal",
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "back": "Back",
+    "retry": "Retry",
+    "copy": "Copy",
+    "copied": "Copied",
+    "search": "Search",
+    "optional": "Optional",
+    "none": "-",
+    "never": "Never",
+    "actions": "Actions",
+    "openMenu": "Open menu"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "settings": "Settings",
+    "legal": "Legal"
+  },
+  "account": {
+    "menu": "My account",
+    "settings": "Settings",
+    "logout": "Sign out"
+  },
+  "language": {
+    "label": "Language",
+    "fr": "Français",
+    "en": "English"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Access your practitioner portal.",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "No account yet?",
+    "signupLink": "Create an account",
+    "resendConfirmation": "Email not confirmed? Resend the link"
+  },
+  "signup": {
+    "title": "Create a practitioner account",
+    "subtitle": "A few details to get started.",
+    "firstNameLabel": "First name",
+    "lastNameLabel": "Last name",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "passwordHint": "At least 8 characters",
+    "terms": "I accept the terms of use and the privacy policy.",
+    "termsRequired": "You must accept the terms to continue.",
+    "submit": "Create my account",
+    "submitting": "Creating…",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Sign in"
+  },
+  "verifyEmail": {
+    "title": "Check your email",
+    "body": "We sent a confirmation link to your address. Click it to activate your account, then sign in.",
+    "resend": "Resend email",
+    "resending": "Sending…",
+    "resent": "Email resent.",
+    "backToLogin": "I confirmed, sign in"
+  },
+  "forgotPassword": {
+    "title": "Forgot password",
+    "subtitle": "Enter your email and we'll send you a reset link.",
+    "emailLabel": "Email",
+    "submit": "Send link",
+    "submitting": "Sending…",
+    "sent": "If an account exists for this email, a link has just been sent.",
+    "backToLogin": "Back to sign in"
+  },
+  "resetPassword": {
+    "title": "New password",
+    "subtitle": "Choose a new password for your account.",
+    "newPasswordLabel": "New password",
+    "confirmPasswordLabel": "Confirm password",
+    "passwordHint": "At least 8 characters",
+    "submit": "Update",
+    "submitting": "Updating…",
+    "success": "Password updated. You can now sign in.",
+    "mismatch": "Passwords do not match.",
+    "invalidLink": "This link is invalid or has expired. Please start over.",
+    "goToLogin": "Go to sign in"
+  },
+  "dashboard": {
+    "greeting": "Hello {name}",
+    "greetingNoName": "Hello",
+    "subtitle": "Here's an overview of your patients' engagement.",
+    "invite": "Invite a patient",
+    "tiles": {
+      "attached": "Attached patients",
+      "active": "Engaged (7 days)",
+      "idle": "Idle",
+      "pending": "Pending invitations"
+    },
+    "recentActivity": {
+      "title": "Recent activity",
+      "subtitle": "Rhythm over the last 7 days.",
+      "completions": "{count, plural, one {# exercise} other {# exercises}}",
+      "unit": "exercises",
+      "ariaLabel": "Activity over the last 7 days",
+      "empty": "No activity this week."
+    },
+    "empty": {
+      "title": "Invite your first patient",
+      "body": "Generate an invitation code to give a patient access to the UMi app, then follow their engagement effortlessly.",
+      "cta": "Invite a patient"
+    },
+    "error": {
+      "title": "Unable to load the dashboard",
+      "retry": "Retry"
+    }
+  },
+  "patients": {
+    "title": "Your patients",
+    "subtitle": "Follow the engagement of all your patients.",
+    "invite": "Invite a patient",
+    "search": {
+      "placeholder": "Search by label"
+    },
+    "filters": {
+      "assiduityLabel": "Engagement",
+      "assiduityAll": "Any engagement",
+      "statusLabel": "Status",
+      "statusAll": "Any status"
+    },
+    "table": {
+      "label": "Label",
+      "seatStatus": "Attachment status",
+      "assiduity": "Engagement",
+      "lastActivity": "Last activity",
+      "completions": "Exercises done"
+    },
+    "row": {
+      "view": "View profile",
+      "revoke": "End follow-up",
+      "delete": "Delete patient",
+      "noLabel": "No label"
+    },
+    "groups": {
+      "engaged": "Active and engaged",
+      "toReengage": "Active, to re-engage",
+      "released": "Unlinked",
+      "ended": "Revoked / expired"
+    },
+    "empty": {
+      "title": "No patients yet",
+      "body": "Invite a patient to start following their engagement.",
+      "cta": "Invite a patient"
+    },
+    "noResults": "No patient matches your search.",
+    "pending": {
+      "title": "Pending invitations",
+      "code": "Code",
+      "expiresOn": "Expires on {date}",
+      "expired": "Expired",
+      "regenerate": "Regenerate",
+      "revoke": "Cancel",
+      "empty": "No pending invitations."
+    },
+    "toast": {
+      "revoked": "Follow-up ended.",
+      "deleted": "Patient deleted.",
+      "codeRegenerated": "New code generated.",
+      "inviteCancelled": "Invitation cancelled."
+    },
+    "error": {
+      "title": "Unable to load your patients",
+      "retry": "Retry"
+    }
+  },
+  "patientDetail": {
+    "back": "Back to patients",
+    "attachedSince": "Attached since {date}",
+    "notAttached": "Not attached yet",
+    "endFollowUp": "End follow-up",
+    "code": {
+      "label": "Attachment code:"
+    },
+    "stats": {
+      "done": "Exercises done",
+      "explored": "Exercises explored",
+      "exploredOf": "of {total}",
+      "activeDays": "Active days (14d)",
+      "lastActivity": "Last activity",
+      "none": "None"
+    },
+    "exercises": {
+      "title": "Exercises",
+      "subtitle": "Done or not done, over the attachment period.",
+      "done": "Done",
+      "notDone": "Not done",
+      "times": "{count, plural, one {# time} other {# times}}",
+      "lastDate": "Last time on {date}",
+      "empty": "No exercises in the library."
+    },
+    "activity": {
+      "title": "Activity",
+      "subtitle": "Exercises completed per day (last 14 days).",
+      "completions": "{count, plural, one {# exercise} other {# exercises}}",
+      "total": "Total: {count, plural, one {# exercise} other {# exercises}} over 14 days.",
+      "empty": "No activity to show yet."
+    },
+    "neverStarted": "{label} hasn't completed any exercise yet.",
+    "endedBanner": "Follow-up ended. This profile is read-only; the history remains available.",
+    "resumeBanner": "Follow-up ended, this profile is read-only. The patient can resume until {date} by re-entering the code above in the app.",
+    "notFound": "Patient not found.",
+    "toast": {
+      "revoked": "Follow-up ended."
+    }
+  },
+  "invite": {
+    "title": "Invite a patient",
+    "description": "Generate an attachment code to share with your patient.",
+    "labelLabel": "Seat label",
+    "labelHint": "A non-identifying marker, e.g. initials.",
+    "emailLabel": "Patient email",
+    "sendEmail": "Send the code by email",
+    "sendEmailHint": "Enter an email to enable sending.",
+    "submit": "Generate code",
+    "submitting": "Generating…",
+    "success": {
+      "title": "Invitation created",
+      "instructions": "Share this code with your patient: they create their account on the UMi app, then enter this code to get attached.",
+      "expiresOn": "This code expires on {date}.",
+      "copy": "Copy code",
+      "copied": "Code copied",
+      "emailSent": "The code was also sent to {email}.",
+      "emailFailed": "The email could not be sent, share the code manually.",
+      "inviteAnother": "Invite another patient",
+      "done": "Done"
+    }
+  },
+  "confirmRevokeSeat": {
+    "title": "End follow-up?",
+    "body": "The patient will lose access to the UMi app. You can restore the follow-up for 30 days if the patient re-enters their code; after that, a new code will be required.",
+    "confirm": "End follow-up",
+    "confirming": "Working…",
+    "cancel": "Cancel"
+  },
+  "confirmDeleteSeat": {
+    "title": "Delete this patient?",
+    "body": "This follow-up will be permanently removed from your portal and its code released. The patient's data in the app is not affected. This action cannot be undone.",
+    "confirm": "Delete",
+    "confirming": "Deleting…",
+    "cancel": "Cancel"
+  },
+  "confirmRevokeInvite": {
+    "title": "Cancel invitation?",
+    "body": "The code will become invalid and can no longer be used by the patient.",
+    "confirm": "Cancel invitation",
+    "confirming": "Working…",
+    "cancel": "Back"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your profile and preferences.",
+    "profile": {
+      "title": "Profile",
+      "firstNameLabel": "First name",
+      "lastNameLabel": "Last name",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Profile updated."
+    },
+    "account": {
+      "title": "Account",
+      "emailLabel": "Email",
+      "practitionerNumberLabel": "Practitioner number",
+      "resetPassword": "Reset password",
+      "resetPasswordSending": "Sending…",
+      "resetPasswordSent": "Reset email sent."
+    },
+    "language": {
+      "title": "Language",
+      "subtitle": "Portal language. Your preference is remembered.",
+      "saved": "Language updated."
+    },
+    "subscription": {
+      "title": "Subscription",
+      "badge": "Soon",
+      "body": "Subscription management will arrive in a future version."
+    }
+  },
+  "badges": {
+    "seat": {
+      "invited": "Invited",
+      "active": "Active",
+      "released": "Released",
+      "revoked": "Revoked",
+      "expired": "Expired",
+      "paused": "Paused"
+    },
+    "assiduity": {
+      "active": "Engaged",
+      "idle": "Idle",
+      "never": "Not started"
+    }
+  },
+  "errors": {
+    "notPractitioner": "Your account is not a practitioner account.",
+    "notOwner": "This seat does not belong to you.",
+    "seatNotInvited": "This code has already been used and can no longer be changed.",
+    "seatNotActiveOrInvited": "This seat cannot be revoked in its current state.",
+    "seatNotDeletable": "This patient cannot be deleted in its current state.",
+    "codeGenerationFailed": "Code generation failed. Please try again.",
+    "invalidCredentials": "Incorrect email or password.",
+    "emailNotConfirmed": "Your email is not confirmed yet. Check your inbox.",
+    "userAlreadyExists": "An account already exists for this email.",
+    "weakPassword": "The password must be at least 8 characters.",
+    "rateLimited": "Too many attempts. Try again in a few minutes.",
+    "generic": "Something went wrong. Please try again.",
+    "required": "This field is required.",
+    "invalidEmail": "Invalid email address."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you're looking for doesn't exist or has moved.",
+    "home": "Back to dashboard",
+    "login": "Go to sign in"
+  },
+  "forbidden": {
+    "title": "Practitioners only",
+    "body": "This area is reserved for practitioners. Your account does not have a practitioner profile.",
+    "logout": "Sign out"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "body": "Something went wrong on our side. You can try again.",
+    "retry": "Retry",
+    "contact": "If the problem persists, contact support."
+  },
+  "legal": {
+    "title": "Legal & Privacy",
+    "backHome": "Back",
+    "placeholderNotice": "Provisional content, to be finalized by UMi.",
+    "editor": {
+      "title": "Publisher",
+      "body": "UMi, psychological support solution. Publisher details to be completed."
+    },
+    "privacy": {
+      "title": "Data protection (GDPR)",
+      "body": "The portal processes data strictly limited to engagement tracking (exercise done or not done), with no clinical content. Practitioners never access their patients' personal content. Full privacy policy to be completed."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "For any question regarding your data, contact UMi support. Contact address to be completed."
+    }
+  }
+}

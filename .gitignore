@@ -1,0 +1,15 @@
+# Secrets / environnement — NE JAMAIS committer
+.env
+.env.local
+.env*.local
+
+# Dépendances / build (Next.js)
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Divers
+.DS_Store
+*.log

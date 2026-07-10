@@ -1,0 +1,362 @@
+{
+  "metadata": {
+    "title": "UMi Portail Psy",
+    "description": "Portail praticien UMi : invitez vos patients et suivez leur engagement."
+  },
+  "common": {
+    "appName": "UMi",
+    "appNameFull": "UMi Portail Psy",
+    "loading": "Chargement…",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "back": "Retour",
+    "retry": "Réessayer",
+    "copy": "Copier",
+    "copied": "Copié",
+    "search": "Rechercher",
+    "optional": "Optionnel",
+    "none": "-",
+    "never": "Jamais",
+    "actions": "Actions",
+    "openMenu": "Ouvrir le menu"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "patients": "Patients",
+    "settings": "Réglages",
+    "legal": "Mentions légales"
+  },
+  "account": {
+    "menu": "Mon compte",
+    "settings": "Réglages",
+    "logout": "Se déconnecter"
+  },
+  "language": {
+    "label": "Langue",
+    "fr": "Français",
+    "en": "English"
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Accédez à votre portail praticien.",
+    "emailLabel": "Email",
+    "passwordLabel": "Mot de passe",
+    "submit": "Se connecter",
+    "submitting": "Connexion…",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Pas encore de compte ?",
+    "signupLink": "Créer un compte",
+    "resendConfirmation": "Email non confirmé ? Renvoyer le lien"
+  },
+  "signup": {
+    "title": "Créer un compte praticien",
+    "subtitle": "Quelques informations pour démarrer.",
+    "firstNameLabel": "Prénom",
+    "lastNameLabel": "Nom",
+    "emailLabel": "Email",
+    "passwordLabel": "Mot de passe",
+    "passwordHint": "8 caractères minimum",
+    "terms": "J'accepte les conditions d'utilisation et la politique de confidentialité.",
+    "termsRequired": "Vous devez accepter les conditions pour continuer.",
+    "submit": "Créer mon compte",
+    "submitting": "Création…",
+    "hasAccount": "Déjà un compte ?",
+    "loginLink": "Se connecter"
+  },
+  "verifyEmail": {
+    "title": "Vérifiez votre email",
+    "body": "Nous avons envoyé un lien de confirmation à votre adresse. Cliquez dessus pour activer votre compte, puis connectez-vous.",
+    "resend": "Renvoyer l'email",
+    "resending": "Envoi…",
+    "resent": "Email renvoyé.",
+    "backToLogin": "J'ai confirmé, me connecter"
+  },
+  "forgotPassword": {
+    "title": "Mot de passe oublié",
+    "subtitle": "Saisissez votre email, nous vous enverrons un lien de réinitialisation.",
+    "emailLabel": "Email",
+    "submit": "Envoyer le lien",
+    "submitting": "Envoi…",
+    "sent": "Si un compte existe pour cet email, un lien vient d'être envoyé.",
+    "backToLogin": "Retour à la connexion"
+  },
+  "resetPassword": {
+    "title": "Nouveau mot de passe",
+    "subtitle": "Choisissez un nouveau mot de passe pour votre compte.",
+    "newPasswordLabel": "Nouveau mot de passe",
+    "confirmPasswordLabel": "Confirmer le mot de passe",
+    "passwordHint": "8 caractères minimum",
+    "submit": "Mettre à jour",
+    "submitting": "Mise à jour…",
+    "success": "Mot de passe mis à jour. Vous pouvez vous connecter.",
+    "mismatch": "Les mots de passe ne correspondent pas.",
+    "invalidLink": "Ce lien est invalide ou a expiré. Recommencez la procédure.",
+    "goToLogin": "Aller à la connexion"
+  },
+  "dashboard": {
+    "greeting": "Bonjour {name}",
+    "greetingNoName": "Bonjour",
+    "subtitle": "Voici un aperçu de l'engagement de vos patients.",
+    "invite": "Inviter un patient",
+    "tiles": {
+      "attached": "Patients rattachés",
+      "active": "Engagés (7 jours)",
+      "idle": "En veille",
+      "pending": "Invitations en attente"
+    },
+    "recentActivity": {
+      "title": "Dernières activités",
+      "subtitle": "Rythme des 7 derniers jours.",
+      "completions": "{count, plural, one {# exercice} other {# exercices}}",
+      "unit": "exercices",
+      "ariaLabel": "Activité des 7 derniers jours",
+      "empty": "Aucune activité cette semaine."
+    },
+    "empty": {
+      "title": "Invitez votre premier patient",
+      "body": "Générez un code d'invitation pour donner accès à l'app UMi à un patient, puis suivez son engagement en toute simplicité.",
+      "cta": "Inviter un patient"
+    },
+    "error": {
+      "title": "Impossible de charger le tableau de bord",
+      "retry": "Réessayer"
+    }
+  },
+  "patients": {
+    "title": "Vos patients",
+    "subtitle": "Suivez l'engagement de l'ensemble de vos patients.",
+    "invite": "Inviter un patient",
+    "search": {
+      "placeholder": "Rechercher par libellé"
+    },
+    "filters": {
+      "assiduityLabel": "Assiduité",
+      "assiduityAll": "Toute assiduité",
+      "statusLabel": "Statut",
+      "statusAll": "Tout statut"
+    },
+    "table": {
+      "label": "Libellé",
+      "seatStatus": "Statut de rattachement",
+      "assiduity": "Assiduité",
+      "lastActivity": "Dernière activité",
+      "completions": "Exercices faits"
+    },
+    "row": {
+      "view": "Voir la fiche",
+      "revoke": "Mettre fin au suivi",
+      "delete": "Supprimer le patient",
+      "noLabel": "Sans libellé"
+    },
+    "groups": {
+      "engaged": "Actifs engagés",
+      "toReengage": "Actifs à relancer",
+      "released": "Déliés",
+      "ended": "Révoqués / expirés"
+    },
+    "empty": {
+      "title": "Aucun patient pour le moment",
+      "body": "Invitez un patient pour commencer à suivre son engagement.",
+      "cta": "Inviter un patient"
+    },
+    "noResults": "Aucun patient ne correspond à votre recherche.",
+    "pending": {
+      "title": "Invitations en attente",
+      "code": "Code",
+      "expiresOn": "Expire le {date}",
+      "expired": "Expirée",
+      "regenerate": "Régénérer",
+      "revoke": "Annuler",
+      "empty": "Aucune invitation en attente."
+    },
+    "toast": {
+      "revoked": "Suivi terminé.",
+      "deleted": "Patient supprimé.",
+      "codeRegenerated": "Nouveau code généré.",
+      "inviteCancelled": "Invitation annulée."
+    },
+    "error": {
+      "title": "Impossible de charger vos patients",
+      "retry": "Réessayer"
+    }
+  },
+  "patientDetail": {
+    "back": "Retour aux patients",
+    "attachedSince": "Rattaché depuis le {date}",
+    "notAttached": "Pas encore rattaché",
+    "endFollowUp": "Mettre fin au suivi",
+    "code": {
+      "label": "Code de rattachement :"
+    },
+    "stats": {
+      "done": "Exercices faits",
+      "explored": "Exercices explorés",
+      "exploredOf": "sur {total}",
+      "activeDays": "Jours actifs (14 j)",
+      "lastActivity": "Dernière activité",
+      "none": "Aucune"
+    },
+    "exercises": {
+      "title": "Exercices",
+      "subtitle": "Fait ou non fait, sur la période de rattachement.",
+      "done": "Fait",
+      "notDone": "Non fait",
+      "times": "{count, plural, one {# fois} other {# fois}}",
+      "lastDate": "Dernière fois le {date}",
+      "empty": "Aucun exercice dans la bibliothèque."
+    },
+    "activity": {
+      "title": "Activité",
+      "subtitle": "Exercices réalisés par jour (14 derniers jours).",
+      "completions": "{count, plural, one {# exercice} other {# exercices}}",
+      "total": "Total : {count, plural, one {# exercice} other {# exercices}} sur 14 jours.",
+      "empty": "Pas encore d'activité à afficher."
+    },
+    "neverStarted": "{label} n'a pas encore réalisé d'exercice.",
+    "endedBanner": "Suivi terminé. Cette fiche est en lecture seule, l'historique reste consultable.",
+    "resumeBanner": "Suivi terminé, cette fiche est en lecture seule. Le patient peut reprendre son suivi jusqu'au {date} en ressaisissant le code ci-dessus dans l'app.",
+    "notFound": "Patient introuvable.",
+    "toast": {
+      "revoked": "Suivi terminé."
+    }
+  },
+  "invite": {
+    "title": "Inviter un patient",
+    "description": "Générez un code de rattachement à transmettre à votre patient.",
+    "labelLabel": "Libellé du siège",
+    "labelHint": "Un repère non nominatif, par ex. des initiales.",
+    "emailLabel": "Email du patient",
+    "sendEmail": "Envoyer le code par email",
+    "sendEmailHint": "Renseignez un email pour activer l'envoi.",
+    "submit": "Générer le code",
+    "submitting": "Génération…",
+    "success": {
+      "title": "Invitation créée",
+      "instructions": "Transmettez ce code à votre patient : il crée son compte sur l'app UMi, puis saisit ce code pour se rattacher.",
+      "expiresOn": "Ce code expire le {date}.",
+      "copy": "Copier le code",
+      "copied": "Code copié",
+      "emailSent": "Le code a aussi été envoyé à {email}.",
+      "emailFailed": "L'email n'a pas pu être envoyé, transmettez le code manuellement.",
+      "inviteAnother": "Inviter un autre patient",
+      "done": "Terminé"
+    }
+  },
+  "confirmRevokeSeat": {
+    "title": "Mettre fin au suivi ?",
+    "body": "Le patient perdra l'accès à l'app UMi. Vous pourrez rétablir le suivi pendant 30 jours si le patient ressaisit son code ; au-delà, une nouvelle invitation sera nécessaire.",
+    "confirm": "Mettre fin au suivi",
+    "confirming": "En cours…",
+    "cancel": "Annuler"
+  },
+  "confirmDeleteSeat": {
+    "title": "Supprimer ce patient ?",
+    "body": "Ce suivi sera définitivement retiré de votre portail et son code sera libéré. Les données du patient dans l'app ne sont pas affectées. Cette action est irréversible.",
+    "confirm": "Supprimer",
+    "confirming": "Suppression…",
+    "cancel": "Annuler"
+  },
+  "confirmRevokeInvite": {
+    "title": "Annuler l'invitation ?",
+    "body": "Le code deviendra invalide et ne pourra plus être utilisé par le patient.",
+    "confirm": "Annuler l'invitation",
+    "confirming": "En cours…",
+    "cancel": "Retour"
+  },
+  "settings": {
+    "title": "Réglages",
+    "subtitle": "Gérez votre profil et vos préférences.",
+    "profile": {
+      "title": "Profil",
+      "firstNameLabel": "Prénom",
+      "lastNameLabel": "Nom",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "saved": "Profil mis à jour."
+    },
+    "account": {
+      "title": "Compte",
+      "emailLabel": "Email",
+      "practitionerNumberLabel": "Numéro de praticien",
+      "resetPassword": "Réinitialiser le mot de passe",
+      "resetPasswordSending": "Envoi…",
+      "resetPasswordSent": "Email de réinitialisation envoyé."
+    },
+    "language": {
+      "title": "Langue",
+      "subtitle": "Langue du portail. Votre préférence est mémorisée.",
+      "saved": "Langue mise à jour."
+    },
+    "subscription": {
+      "title": "Abonnement",
+      "badge": "Bientôt",
+      "body": "La gestion de l'abonnement arrivera dans une prochaine version."
+    }
+  },
+  "badges": {
+    "seat": {
+      "invited": "Invité",
+      "active": "Actif",
+      "released": "Délié",
+      "revoked": "Révoqué",
+      "expired": "Expiré",
+      "paused": "En pause"
+    },
+    "assiduity": {
+      "active": "Engagé",
+      "idle": "En veille",
+      "never": "Jamais commencé"
+    }
+  },
+  "errors": {
+    "notPractitioner": "Votre compte n'est pas un compte praticien.",
+    "notOwner": "Ce siège ne vous appartient pas.",
+    "seatNotInvited": "Ce code a déjà été utilisé et n'est plus modifiable.",
+    "seatNotActiveOrInvited": "Ce siège ne peut pas être révoqué dans son état actuel.",
+    "seatNotDeletable": "Ce patient ne peut pas être supprimé dans son état actuel.",
+    "codeGenerationFailed": "La génération du code a échoué. Réessayez.",
+    "invalidCredentials": "Email ou mot de passe incorrect.",
+    "emailNotConfirmed": "Votre email n'est pas encore confirmé. Vérifiez votre boîte de réception.",
+    "userAlreadyExists": "Un compte existe déjà avec cet email.",
+    "weakPassword": "Le mot de passe doit contenir au moins 8 caractères.",
+    "rateLimited": "Trop de tentatives. Réessayez dans quelques minutes.",
+    "generic": "Une erreur est survenue. Réessayez.",
+    "required": "Ce champ est requis.",
+    "invalidEmail": "Adresse email invalide."
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "La page que vous cherchez n'existe pas ou a été déplacée.",
+    "home": "Retour au tableau de bord",
+    "login": "Aller à la connexion"
+  },
+  "forbidden": {
+    "title": "Espace réservé aux praticiens",
+    "body": "Cet espace est réservé aux praticiens. Votre compte ne dispose pas d'un profil praticien.",
+    "logout": "Se déconnecter"
+  },
+  "errorBoundary": {
+    "title": "Une erreur est survenue",
+    "body": "Quelque chose s'est mal passé de notre côté. Vous pouvez réessayer.",
+    "retry": "Réessayer",
+    "contact": "Si le problème persiste, contactez le support."
+  },
+  "legal": {
+    "title": "Mentions légales & confidentialité",
+    "backHome": "Retour",
+    "placeholderNotice": "Contenu provisoire, à finaliser par UMi.",
+    "editor": {
+      "title": "Éditeur",
+      "body": "UMi, solution d'accompagnement psychologique. Coordonnées de l'éditeur à compléter."
+    },
+    "privacy": {
+      "title": "Protection des données (RGPD)",
+      "body": "Le portail traite des données strictement limitées au suivi de l'engagement (exercice fait ou non fait), sans contenu clinique. Les praticiens n'accèdent jamais au contenu personnel de leurs patients. Détail de la politique de confidentialité à compléter."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "Pour toute question relative à vos données, contactez le support UMi. Adresse de contact à compléter."
+    }
+  }
+}
