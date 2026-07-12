@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { Toaster } from 'sonner';
+import { EnvBadge } from '@/components/env-badge';
+import { getAppEnv } from '@/lib/env';
 import './globals.css';
 
 // The whole portal is session-driven (cookies) — render dynamically so the
@@ -10,8 +12,10 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('metadata');
+  const env = getAppEnv();
+  const title = t('title');
   return {
-    title: t('title'),
+    title: env ? `${env.toUpperCase()} · ${title}` : title,
     description: t('description'),
   };
 }
@@ -31,6 +35,7 @@ export default async function RootLayout({
           {children}
           <Toaster position="top-right" />
         </NextIntlClientProvider>
+        <EnvBadge />
       </body>
     </html>
   );
