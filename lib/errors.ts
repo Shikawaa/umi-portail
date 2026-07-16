@@ -8,6 +8,7 @@ export type AppErrorKey =
   | 'seatNotInvited'
   | 'seatNotActiveOrInvited'
   | 'seatNotDeletable'
+  | 'alreadyRecommended'
   | 'codeGenerationFailed'
   | 'invalidCredentials'
   | 'emailNotConfirmed'

@@ -66,3 +66,21 @@ export interface ExerciseCompletion {
   exercise_id: number;
   completed_at: string;
 }
+
+/**
+ * Row from the `recommendations` table, shared with the mobile app.
+ * `exercise_id` is text on purpose (mobile stores the numeric exercise id as
+ * a string). The portal writes the same note in `note` and `note_en` until
+ * translation is handled, and always keeps `is_active` true for now.
+ */
+export interface Recommendation {
+  id: string;
+  practitioner_id: string;
+  patient_id: string;
+  exercise_id: string;
+  note: string | null;
+  note_en: string | null;
+  practitioner_name: string | null;
+  is_active: boolean;
+  created_at: string;
+}

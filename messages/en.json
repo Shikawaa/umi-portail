@@ -213,6 +213,34 @@
       "total": "Total: {count, plural, one {# exercise} other {# exercises}} over 14 days.",
       "empty": "No activity to show yet."
     },
+    "recommendations": {
+      "title": "Recommended exercises",
+      "subtitle": "Highlighted for this patient in the UMi app.",
+      "addPlaceholder": "Recommend an exercise",
+      "allAdded": "All exercises in the library have been recommended.",
+      "addedOn": "Recommended on {date}",
+      "remove": "Remove the recommendation",
+      "dialog": {
+        "title": "Recommend an exercise",
+        "description": "Pick an exercise and optionally add a note visible to the patient.",
+        "exerciseLabel": "Exercise",
+        "noteLabel": "Note for the patient",
+        "notePlaceholder": "E.g.: practice before going to sleep.",
+        "submit": "Recommend",
+        "submitting": "Adding…"
+      },
+      "confirmRemove": {
+        "title": "Remove this recommendation?",
+        "body": "The exercise will no longer be highlighted for this patient in the UMi app.",
+        "confirm": "Remove",
+        "confirming": "Removing…",
+        "cancel": "Cancel"
+      },
+      "toast": {
+        "added": "Exercise recommended.",
+        "removed": "Recommendation removed."
+      }
+    },
     "neverStarted": "{label} hasn't completed any exercise yet.",
     "endedBanner": "Follow-up ended. This profile is read-only; the history remains available.",
     "resumeBanner": "Follow-up ended, this profile is read-only. The patient can resume until {date} by re-entering the code above in the app.",
@@ -315,6 +343,7 @@
     "seatNotInvited": "This code has already been used and can no longer be changed.",
     "seatNotActiveOrInvited": "This seat cannot be revoked in its current state.",
     "seatNotDeletable": "This patient cannot be deleted in its current state.",
+    "alreadyRecommended": "This exercise is already recommended to this patient.",
     "codeGenerationFailed": "Code generation failed. Please try again.",
     "invalidCredentials": "Incorrect email or password.",
     "emailNotConfirmed": "Your email is not confirmed yet. Check your inbox.",

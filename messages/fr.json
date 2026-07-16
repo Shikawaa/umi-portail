@@ -213,6 +213,34 @@
       "total": "Total : {count, plural, one {# exercice} other {# exercices}} sur 14 jours.",
       "empty": "Pas encore d'activité à afficher."
     },
+    "recommendations": {
+      "title": "Exercices recommandés",
+      "subtitle": "Mis en avant pour ce patient dans l'app UMi.",
+      "addPlaceholder": "Recommander un exercice",
+      "allAdded": "Tous les exercices de la bibliothèque ont été recommandés.",
+      "addedOn": "Recommandé le {date}",
+      "remove": "Retirer la recommandation",
+      "dialog": {
+        "title": "Recommander un exercice",
+        "description": "Choisissez un exercice et ajoutez si besoin une note visible par le patient.",
+        "exerciseLabel": "Exercice",
+        "noteLabel": "Note pour le patient",
+        "notePlaceholder": "Par ex. : à pratiquer avant de dormir.",
+        "submit": "Recommander",
+        "submitting": "Ajout…"
+      },
+      "confirmRemove": {
+        "title": "Retirer cette recommandation ?",
+        "body": "L'exercice ne sera plus mis en avant pour ce patient dans l'app UMi.",
+        "confirm": "Retirer",
+        "confirming": "Retrait…",
+        "cancel": "Annuler"
+      },
+      "toast": {
+        "added": "Exercice recommandé.",
+        "removed": "Recommandation retirée."
+      }
+    },
     "neverStarted": "{label} n'a pas encore réalisé d'exercice.",
     "endedBanner": "Suivi terminé. Cette fiche est en lecture seule, l'historique reste consultable.",
     "resumeBanner": "Suivi terminé, cette fiche est en lecture seule. Le patient peut reprendre son suivi jusqu'au {date} en ressaisissant le code ci-dessus dans l'app.",
@@ -315,6 +343,7 @@
     "seatNotInvited": "Ce code a déjà été utilisé et n'est plus modifiable.",
     "seatNotActiveOrInvited": "Ce siège ne peut pas être révoqué dans son état actuel.",
     "seatNotDeletable": "Ce patient ne peut pas être supprimé dans son état actuel.",
+    "alreadyRecommended": "Cet exercice est déjà recommandé à ce patient.",
     "codeGenerationFailed": "La génération du code a échoué. Réessayez.",
     "invalidCredentials": "Email ou mot de passe incorrect.",
     "emailNotConfirmed": "Votre email n'est pas encore confirmé. Vérifiez votre boîte de réception.",

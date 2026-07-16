@@ -20,10 +20,16 @@ import {
 } from '@/components/exercise-completion-list';
 import { DayActivity } from '@/components/day-activity';
 import { PatientStats } from '@/components/patient-stats';
+import { RecommendationsCard } from '@/components/recommendations-card';
 import { SeatCode } from '@/components/seat-code';
 import { buildDailyBuckets } from '@/lib/activity';
 import { formatDate, formatRelativeDay } from '@/lib/format';
-import type { Assiduity, PatientSeat, PatientUsage } from '@/lib/types';
+import type {
+  Assiduity,
+  PatientSeat,
+  PatientUsage,
+  Recommendation,
+} from '@/lib/types';
 
 const ACTIVITY_DAYS = 14;
 
@@ -65,24 +71,36 @@ export default async function PatientFollowUpPage({
     (isEnglish ? e.titre_en || e.titre : e.titre)?.trim() || null;
 
   let completions: { exercise_id: number; completed_at: string }[] = [];
-  if (seat.patient_user_id && seat.redeemed_at) {
-    // Scope to this seat's follow-up period [redeemed_at, end). RLS enforces the
-    // same bound, but scoping here keeps the fiche exact if the patient had
-    // several periods with this practitioner.
-    const periodEnd = seat.released_at ?? seat.revoked_at;
-    let query = supabase
-      .from('exercise_completions')
-      .select('exercise_id, completed_at')
-      .eq('patient_user_id', seat.patient_user_id)
-      .gte('completed_at', seat.redeemed_at);
-    if (periodEnd) query = query.lt('completed_at', periodEnd);
-    const { data: compData } = await query.order('completed_at', {
-      ascending: false,
-    });
-    completions = (compData ?? []) as {
+  let recommendations: Recommendation[] = [];
+  if (seat.patient_user_id) {
+    let compQuery = null;
+    if (seat.redeemed_at) {
+      // Scope to this seat's follow-up period [redeemed_at, end). RLS enforces
+      // the same bound, but scoping here keeps the fiche exact if the patient
+      // had several periods with this practitioner.
+      const periodEnd = seat.released_at ?? seat.revoked_at;
+      let query = supabase
+        .from('exercise_completions')
+        .select('exercise_id, completed_at')
+        .eq('patient_user_id', seat.patient_user_id)
+        .gte('completed_at', seat.redeemed_at);
+      if (periodEnd) query = query.lt('completed_at', periodEnd);
+      compQuery = query.order('completed_at', { ascending: false });
+    }
+    const [compRes, recRes] = await Promise.all([
+      compQuery,
+      supabase
+        .from('recommendations')
+        .select('*')
+        .eq('practitioner_id', user.id)
+        .eq('patient_id', seat.patient_user_id)
+        .order('created_at', { ascending: false }),
+    ]);
+    completions = (compRes?.data ?? []) as {
       exercise_id: number;
       completed_at: string;
     }[];
+    recommendations = (recRes.data ?? []) as Recommendation[];
   }
 
   const byExercise = new Map<number, { count: number; last: string | null }>();
@@ -102,6 +120,26 @@ export default async function PatientFollowUpPage({
       last: agg?.last ?? null,
     };
   });
+
+  // Recommendations: `exercise_id` is stored as text (mobile convention),
+  // resolve titles against the library. Already-recommended exercises are
+  // hidden from the picker (unique per patient/practitioner in DB).
+  const exerciseById = new Map(exercises.map((e) => [e.id, e]));
+  const recommendedItems = recommendations.map((r) => {
+    const exercise = exerciseById.get(Number(r.exercise_id));
+    return {
+      id: r.id,
+      title: exercise ? exerciseTitle(exercise) ?? `#${r.exercise_id}` : `#${r.exercise_id}`,
+      note: (isEnglish ? r.note_en || r.note : r.note || r.note_en) || null,
+      createdAt: r.created_at,
+    };
+  });
+  const recommendedExerciseIds = new Set(
+    recommendations.map((r) => Number(r.exercise_id)),
+  );
+  const recommendableExercises = exercises
+    .filter((e) => !recommendedExerciseIds.has(e.id))
+    .map((e) => ({ id: e.id, title: exerciseTitle(e) ?? `#${e.id}` }));
 
   const activityBuckets = buildDailyBuckets(
     completions.map((c) => c.completed_at),
@@ -188,6 +226,14 @@ export default async function PatientFollowUpPage({
           lastActivity: t('stats.lastActivity'),
         }}
       />
+
+      {seat.patient_user_id ? (
+        <RecommendationsCard
+          seatId={seat.id}
+          items={recommendedItems}
+          available={recommendableExercises}
+        />
+      ) : null}
 
       {isActive && totalCompletions === 0 ? (
         <div className="rounded-lg border border-dashed border-border bg-card px-4 py-6 text-center text-sm text-muted-foreground">
