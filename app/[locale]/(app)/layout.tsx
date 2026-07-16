@@ -1,28 +1,23 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, getCachedUser, getCachedPractitioner } from '@/lib/supabase/server';
 import { AppShell } from '@/components/app-shell';
 import type { Practitioner } from '@/lib/types';
+import { setRequestLocale } from 'next-intl/server';
 import { LOCALE_COOKIE, defaultLocale, isLocale } from '@/i18n/request';
 
 export default async function AppLayout({
   children,
+  params: { locale },
 }: {
   children: React.ReactNode;
+  params: { locale: string };
 }) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  setRequestLocale(locale);
+  const { user } = await getCachedUser();
   if (!user) redirect('/login');
 
-  const { data: existing } = await supabase
-    .from('practitioners')
-    .select('*')
-    .eq('id', user.id)
-    .maybeSingle();
-
-  let practitioner = existing as Practitioner | null;
+  let practitioner = await getCachedPractitioner();
 
   // First authenticated load: create the practitioner row for accounts that
   // signed up through the portal. Any other account (e.g. a patient) is denied.
@@ -41,6 +36,7 @@ export default async function AppLayout({
       ? cookieLocale
       : (metaLocale ?? defaultLocale);
 
+    const supabase = createClient();
     const { data: upserted } = await supabase
       .from('practitioners')
       .upsert({

@@ -1,5 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { cache } from 'react';
+import type { Practitioner } from '@/lib/types';
 
 type CookieToSet = { name: string; value: string; options?: CookieOptions };
 
@@ -31,3 +33,21 @@ export function createClient() {
     },
   });
 }
+
+export const getCachedUser = cache(async () => {
+  const supabase = createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  return { user, error };
+});
+
+export const getCachedPractitioner = cache(async () => {
+  const { user } = await getCachedUser();
+  if (!user) return null;
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('practitioners')
+    .select('*')
+    .eq('id', user.id)
+    .maybeSingle();
+  return data as Practitioner | null;
+});

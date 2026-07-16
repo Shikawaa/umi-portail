@@ -6,9 +6,18 @@ type CookieToSet = { name: string; value: string; options?: CookieOptions };
 const PROTECTED_PREFIXES = ['/dashboard', '/patients', '/settings'];
 const AUTH_ONLY_PATHS = ['/login', '/signup'];
 
+function stripLocale(pathname: string) {
+  const parts = pathname.split('/');
+  if (parts.length > 1 && (parts[1] === 'fr' || parts[1] === 'en')) {
+    return '/' + parts.slice(2).join('/');
+  }
+  return pathname;
+}
+
 function isProtected(pathname: string) {
+  const stripped = stripLocale(pathname);
   return PROTECTED_PREFIXES.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`),
+    (p) => stripped === p || stripped.startsWith(`${p}/`),
   );
 }
 
@@ -17,8 +26,8 @@ function isProtected(pathname: string) {
  * Unauthenticated users hitting a protected route are redirected to /login.
  * Authenticated users hitting /login or /signup are sent to /dashboard.
  */
-export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({ request });
+export async function updateSession(request: NextRequest, response?: NextResponse) {
+  let supabaseResponse = response || NextResponse.next({ request });
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -38,7 +47,6 @@ export async function updateSession(request: NextRequest) {
         cookiesToSet.forEach(({ name, value }) =>
           request.cookies.set(name, value),
         );
-        supabaseResponse = NextResponse.next({ request });
         cookiesToSet.forEach(({ name, value, options }) =>
           supabaseResponse.cookies.set(name, value, options),
         );
@@ -51,17 +59,25 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
+  const stripped = stripLocale(pathname);
+  
+  // Extract locale prefix if present
+  let localePrefix = '';
+  const parts = pathname.split('/');
+  if (parts.length > 1 && (parts[1] === 'fr' || parts[1] === 'en')) {
+    localePrefix = '/' + parts[1];
+  }
 
   if (!user && isProtected(pathname)) {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = '/login';
+    redirectUrl.pathname = `${localePrefix}/login`;
     redirectUrl.search = '';
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (user && AUTH_ONLY_PATHS.includes(pathname)) {
+  if (user && AUTH_ONLY_PATHS.includes(stripped)) {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = '/dashboard';
+    redirectUrl.pathname = `${localePrefix}/dashboard`;
     redirectUrl.search = '';
     return NextResponse.redirect(redirectUrl);
   }

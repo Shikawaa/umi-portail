@@ -1,7 +1,7 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { Activity, ChevronRight, Hourglass, Moon, UserPlus, Users } from 'lucide-react';
-import { getLocale, getTranslations } from 'next-intl/server';
-import { createClient } from '@/lib/supabase/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { createClient, getCachedUser, getCachedPractitioner } from '@/lib/supabase/server';
 import { SummaryTile } from '@/components/summary-tile';
 import { InviteDialog } from '@/components/invite-dialog';
 import { LineSparkline } from '@/components/line-sparkline';
@@ -32,21 +32,14 @@ function initialsOf(label: string | null): string {
   return chars.toUpperCase();
 }
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ params: { locale } }: { params: { locale: string } }) {
+  setRequestLocale(locale);
   const t = await getTranslations('dashboard');
   const tPatients = await getTranslations('patients');
-  const locale = await getLocale();
   const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data: practitioner } = await supabase
-    .from('practitioners')
-    .select('first_name')
-    .eq('id', user?.id ?? '')
-    .maybeSingle();
+  const { user } = await getCachedUser();
+  const practitioner = await getCachedPractitioner();
 
   const { data: usageData, error } = await supabase
     .from('v_patient_usage')

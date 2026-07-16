@@ -1,7 +1,7 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import {
   Card,
@@ -27,35 +27,31 @@ import type { Assiduity, PatientSeat, PatientUsage } from '@/lib/types';
 
 const ACTIVITY_DAYS = 14;
 
-export default async function PatientDetailPage({
-  params,
+export default async function PatientFollowUpPage({
+  params: { seatId, locale },
 }: {
-  params: { seatId: string };
+  params: { seatId: string; locale: string };
 }) {
+  setRequestLocale(locale);
   const t = await getTranslations('patientDetail');
   const tPatients = await getTranslations('patients');
-  const locale = await getLocale();
   const supabase = createClient();
 
-  const { data: seatData } = await supabase
-    .from('patient_seats')
-    .select('*')
-    .eq('id', params.seatId)
-    .maybeSingle();
-  if (!seatData) notFound();
+  const [
+    { data: seatData },
+    { data: { user } },
+    { data: usageData },
+    { data: exData }
+  ] = await Promise.all([
+    supabase.from('patient_seats').select('*').eq('id', seatId).maybeSingle(),
+    supabase.auth.getUser(),
+    supabase.from('v_patient_usage').select('*').eq('seat_id', seatId).maybeSingle(),
+    supabase.from('exercises').select('id, titre, titre_en').order('id', { ascending: true })
+  ]);
+
+  if (!user || !seatData) notFound();
   const seat = seatData as PatientSeat;
-
-  const { data: usageData } = await supabase
-    .from('v_patient_usage')
-    .select('*')
-    .eq('seat_id', params.seatId)
-    .maybeSingle();
   const usage = usageData as PatientUsage | null;
-
-  const { data: exData } = await supabase
-    .from('exercises')
-    .select('id, titre, titre_en')
-    .order('id', { ascending: true });
   const exercises = (exData ?? []) as {
     id: number;
     titre: string | null;

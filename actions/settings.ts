@@ -37,12 +37,6 @@ export async function setLocale(input: {
 }): Promise<ActionResult> {
   if (!isLocale(input.locale)) return { ok: false, error: 'generic' };
 
-  cookies().set(LOCALE_COOKIE, input.locale, {
-    path: '/',
-    maxAge: 60 * 60 * 24 * 365,
-    sameSite: 'lax',
-  });
-
   const supabase = createClient();
   const {
     data: { user },
@@ -54,7 +48,6 @@ export async function setLocale(input: {
       .eq('id', user.id);
   }
 
-  revalidatePath('/', 'layout');
   return { ok: true, data: undefined };
 }
 

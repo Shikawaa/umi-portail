@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { isLocale } from '@/i18n/request';
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages, getTranslations } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { Toaster } from 'sonner';
 import { EnvBadge } from '@/components/env-badge';
 import { getAppEnv } from '@/lib/env';
-import './globals.css';
+import '../globals.css';
 
 // The whole portal is session-driven (cookies) — render dynamically so the
 // build never tries to statically evaluate Supabase env vars.
@@ -22,11 +24,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({
   children,
+  params: { locale },
 }: {
   children: React.ReactNode;
+  params: { locale: string };
 }) {
-  const locale = await getLocale();
-  const messages = await getMessages();
+  if (!isLocale(locale)) notFound();
+  setRequestLocale(locale);
+  const messages = await getMessages({ locale });
 
   return (
     <html lang={locale} suppressHydrationWarning>

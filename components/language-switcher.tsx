@@ -2,7 +2,7 @@
 
 import { useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { Check, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,13 +20,16 @@ export function LanguageSwitcher({ withLabel = false }: { withLabel?: boolean })
   const locale = useLocale();
   const t = useTranslations('language');
   const router = useRouter();
+  const pathname = usePathname();
   const [pending, startTransition] = useTransition();
 
   function change(next: (typeof LOCALES)[number]) {
     if (next === locale) return;
-    startTransition(async () => {
-      const res = await setLocale({ locale: next });
-      if (res.ok) router.refresh();
+    // Save preference in background without blocking UI
+    setLocale({ locale: next }).catch(console.error);
+    
+    startTransition(() => {
+      router.replace(pathname, { locale: next });
     });
   }
 

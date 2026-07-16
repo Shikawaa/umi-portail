@@ -1,17 +1,12 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient, getCachedUser, getCachedPractitioner } from '@/lib/supabase/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { SettingsView } from '@/components/settings-view';
 
-export default async function SettingsPage() {
+export default async function SettingsPage({ params: { locale } }: { params: { locale: string } }) {
+  setRequestLocale(locale);
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data } = await supabase
-    .from('practitioners')
-    .select('first_name, last_name, practitioner_number')
-    .eq('id', user?.id ?? '')
-    .maybeSingle();
+  const { user } = await getCachedUser();
+  const data = await getCachedPractitioner();
 
   const practitioner = data as {
     first_name: string | null;

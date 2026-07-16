@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import { Link, usePathname } from '@/i18n/navigation';
 import { LayoutDashboard, Menu, Settings, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
@@ -46,8 +46,10 @@ export function AppShell({
 
   const sidebarInner = (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center px-6 text-lg font-semibold text-primary">
-        {tCommon('appName')}
+      <div className="flex h-16 items-center px-6">
+        <Link href="/dashboard" className="flex items-center hover:opacity-80 transition-opacity">
+          <Image src="/logo.png" alt={tCommon('appName')} width={32} height={32} />
+        </Link>
       </div>
       <nav className="flex flex-1 flex-col gap-1 px-3">
         {NAV.map((item) => {

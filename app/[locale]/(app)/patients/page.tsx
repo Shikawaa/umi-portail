@@ -1,9 +1,11 @@
 import { createClient } from '@/lib/supabase/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { PatientsView } from '@/components/patients-view';
 import type { PendingSeat } from '@/components/invitations-panel';
 import type { PatientUsage } from '@/lib/types';
 
-export default async function PatientsPage() {
+export default async function PatientsPage({ params: { locale } }: { params: { locale: string } }) {
+  setRequestLocale(locale);
   const supabase = createClient();
 
   const { data: usageData, error: usageError } = await supabase
