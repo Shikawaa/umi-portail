@@ -69,14 +69,15 @@ export interface ExerciseCompletion {
 
 /**
  * Row from the `recommendations` table, shared with the mobile app.
+ * A recommendation belongs to a patient seat (migration 0006), i.e. to the
+ * follow-up relationship rather than to the practitioner or patient directly.
  * `exercise_id` is text on purpose (mobile stores the numeric exercise id as
  * a string). The portal writes the same note in `note` and `note_en` until
  * translation is handled, and always keeps `is_active` true for now.
  */
 export interface Recommendation {
   id: string;
-  practitioner_id: string;
-  patient_id: string;
+  patient_seat_id: string;
   exercise_id: string;
   note: string | null;
   note_en: string | null;

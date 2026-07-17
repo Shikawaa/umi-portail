@@ -92,8 +92,7 @@ export default async function PatientFollowUpPage({
       supabase
         .from('recommendations')
         .select('*')
-        .eq('practitioner_id', user.id)
-        .eq('patient_id', seat.patient_user_id)
+        .eq('patient_seat_id', seat.id)
         .order('created_at', { ascending: false }),
     ]);
     completions = (compRes?.data ?? []) as {
