@@ -6,6 +6,9 @@ const config: Config = {
     './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './actions/**/*.{ts,tsx}',
+    // Class names also live in helpers (e.g. the `.state-*` engagement map in
+    // lib/seats.ts) — without this glob they get tree-shaken.
+    './lib/**/*.{ts,tsx}',
   ],
   theme: {
     container: {
@@ -50,6 +53,17 @@ const config: Config = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
+        },
+        // Engagement state, resolved from the nearest `.state-*` ancestor
+        // (patient fiche) or the element itself (assiduity badge).
+        state: {
+          DEFAULT: 'hsl(var(--state) / <alpha-value>)',
+          solid: 'hsl(var(--state-solid) / <alpha-value>)',
+          fg: 'hsl(var(--state-fg) / <alpha-value>)',
+          bg: 'hsl(var(--state-bg) / <alpha-value>)',
+          border: 'hsl(var(--state-border) / <alpha-value>)',
+          soft: 'hsl(var(--state-soft) / <alpha-value>)',
+          surface: 'hsl(var(--state-surface) / <alpha-value>)',
         },
       },
       borderRadius: {

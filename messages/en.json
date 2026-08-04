@@ -187,7 +187,16 @@
     "notAttached": "Not attached yet",
     "endFollowUp": "End follow-up",
     "code": {
-      "label": "Attachment code:"
+      "label": "Attachment code:",
+      "reactivate": "Reactivate code",
+      "reactivating": "Reactivating…",
+      "reactivateHint": "Reactivate the code so this patient can link again."
+    },
+    "rename": {
+      "edit": "Rename patient",
+      "label": "Patient label",
+      "hint": "A non-nominative marker, e.g. initials.",
+      "placeholder": "No label"
     },
     "stats": {
       "done": "Exercises done",
@@ -199,12 +208,14 @@
     },
     "exercises": {
       "title": "Exercises",
-      "subtitle": "Done or not done, over the attachment period.",
+      "subtitle": "Most practised first, over the attachment period.",
       "done": "Done",
       "notDone": "Not done",
       "times": "{count, plural, one {# time} other {# times}}",
       "lastDate": "Last time on {date}",
-      "empty": "No exercises in the library."
+      "empty": "No exercises in the library.",
+      "showAll": "Show {count, plural, one {# more exercise} other {# more exercises}}",
+      "showLess": "Show less"
     },
     "activity": {
       "title": "Activity",
@@ -216,18 +227,20 @@
     "recommendations": {
       "title": "Recommended exercises",
       "subtitle": "Highlighted for this patient in the UMi app.",
-      "addPlaceholder": "Recommend an exercise",
+      "addPlaceholder": "Recommend exercises",
       "allAdded": "All exercises in the library have been recommended.",
       "addedOn": "Recommended on {date}",
       "remove": "Remove the recommendation",
       "dialog": {
-        "title": "Recommend an exercise",
-        "description": "Pick an exercise and optionally add a note visible to the patient.",
-        "exerciseLabel": "Exercise",
+        "title": "Recommend exercises",
+        "description": "Select one or several exercises and add an optional note visible to the patient.",
+        "exerciseLabel": "Exercises",
         "noteLabel": "Note for the patient",
         "notePlaceholder": "E.g.: practice before going to sleep.",
         "submit": "Recommend",
-        "submitting": "Adding…"
+        "submitting": "Adding…",
+        "selectedCount": "{count, plural, one {# selected} other {# selected}}",
+        "noteShared": "The same note will be added to each selected exercise."
       },
       "confirmRemove": {
         "title": "Remove this recommendation?",
@@ -237,7 +250,7 @@
         "cancel": "Cancel"
       },
       "toast": {
-        "added": "Exercise recommended.",
+        "added": "{count, plural, one {# exercise recommended.} other {# exercises recommended.}}",
         "removed": "Recommendation removed."
       }
     },
@@ -246,7 +259,10 @@
     "resumeBanner": "Follow-up ended, this profile is read-only. The patient can resume until {date} by re-entering the code above in the app.",
     "notFound": "Patient not found.",
     "toast": {
-      "revoked": "Follow-up ended."
+      "revoked": "Follow-up ended.",
+      "reactivated": "Code reactivated. The patient can link again with this code.",
+      "codeReissued": "New code generated. Share it with the patient so they can link again.",
+      "renamed": "Label updated."
     }
   },
   "invite": {
@@ -287,10 +303,17 @@
   },
   "confirmRevokeInvite": {
     "title": "Cancel invitation?",
-    "body": "The code will become invalid and can no longer be used by the patient.",
+    "body": "This invitation was never activated: it will be deleted from your portal and its code released. This action cannot be undone.",
     "confirm": "Cancel invitation",
     "confirming": "Working…",
     "cancel": "Back"
+  },
+  "confirmReissueCode": {
+    "title": "This code is already in use",
+    "body": "This code has been reassigned to another patient since the follow-up ended. Generate a new code for this patient: their profile and full history are kept.",
+    "confirm": "Generate a new code",
+    "confirming": "Generating…",
+    "cancel": "Cancel"
   },
   "settings": {
     "title": "Settings",
@@ -329,12 +352,14 @@
       "released": "Released",
       "revoked": "Revoked",
       "expired": "Expired",
-      "paused": "Paused"
+      "paused": "Paused",
+      "resumable": "Resume available"
     },
     "assiduity": {
       "active": "Engaged",
       "idle": "Idle",
-      "never": "Not started"
+      "never": "Not started",
+      "paused": "Paused"
     }
   },
   "errors": {
@@ -344,6 +369,9 @@
     "seatNotActiveOrInvited": "This seat cannot be revoked in its current state.",
     "seatNotDeletable": "This patient cannot be deleted in its current state.",
     "alreadyRecommended": "This exercise is already recommended to this patient.",
+    "seatNotReactivable": "The code can only be reactivated on an ended follow-up.",
+    "seatNeverAttached": "This patient never linked: create a new invitation.",
+    "codeTaken": "This code is already used by another patient.",
     "codeGenerationFailed": "Code generation failed. Please try again.",
     "invalidCredentials": "Incorrect email or password.",
     "emailNotConfirmed": "Your email is not confirmed yet. Check your inbox.",

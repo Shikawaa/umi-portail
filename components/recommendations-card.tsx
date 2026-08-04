@@ -21,12 +21,13 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Spinner } from '@/components/ui/spinner';
 import { ConfirmDialog } from '@/components/confirm-dialog';
 import {
-  addRecommendation,
+  addRecommendations,
   removeRecommendation,
 } from '@/actions/recommendations';
 import { formatDate } from '@/lib/format';
@@ -47,8 +48,9 @@ export interface RecommendableExercise {
 /**
  * "Recommended exercises" card on the patient fiche. Lists the exercises the
  * practitioner recommended to this patient (title, optional note, date) and
- * offers a dashed placeholder that opens a dialog to add one. Exercises
- * already recommended are hidden from the picker (unique per patient in DB).
+ * offers a dashed placeholder that opens a dialog to add some. Several
+ * exercises can be picked in one pass (they share the note). Exercises already
+ * recommended are hidden from the picker (unique per seat in DB).
  */
 export function RecommendationsCard({
   seatId,
@@ -66,7 +68,7 @@ export function RecommendationsCard({
   const router = useRouter();
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [note, setNote] = useState('');
   const [removeTarget, setRemoveTarget] = useState<RecommendedItem | null>(
     null,
@@ -77,25 +79,33 @@ export function RecommendationsCard({
   function onDialogOpenChange(next: boolean) {
     setDialogOpen(next);
     if (!next) {
-      setSelectedId(null);
+      setSelectedIds([]);
       setNote('');
     }
   }
 
+  function toggle(exerciseId: number) {
+    setSelectedIds((prev) =>
+      prev.includes(exerciseId)
+        ? prev.filter((id) => id !== exerciseId)
+        : [...prev, exerciseId],
+    );
+  }
+
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (selectedId == null) return;
+    if (selectedIds.length === 0) return;
     startTransition(async () => {
-      const res = await addRecommendation({
+      const res = await addRecommendations({
         seatId,
-        exerciseId: selectedId,
+        exerciseIds: selectedIds,
         note: note || undefined,
       });
       if (!res.ok) {
         toast.error(tErrors(res.error));
         return;
       }
-      toast.success(t('toast.added'));
+      toast.success(t('toast.added', { count: selectedIds.length }));
       onDialogOpenChange(false);
       router.refresh();
     });
@@ -184,26 +194,30 @@ export function RecommendationsCard({
               <DialogDescription>{t('dialog.description')}</DialogDescription>
             </DialogHeader>
             <fieldset className="space-y-2">
-              <legend className="text-sm font-medium text-foreground">
-                {t('dialog.exerciseLabel')}
-              </legend>
+              <div className="flex items-center justify-between gap-2">
+                <legend className="text-sm font-medium text-foreground">
+                  {t('dialog.exerciseLabel')}
+                </legend>
+                {selectedIds.length > 0 ? (
+                  <span className="text-xs text-muted-foreground">
+                    {t('dialog.selectedCount', { count: selectedIds.length })}
+                  </span>
+                ) : null}
+              </div>
               <div className="max-h-60 space-y-1 overflow-y-auto rounded-md border border-input p-1">
                 {available.map((exercise) => (
                   <label
                     key={exercise.id}
                     className={cn(
                       'flex cursor-pointer items-center gap-2.5 rounded-sm px-3 py-2 text-sm transition-colors',
-                      selectedId === exercise.id
+                      selectedIds.includes(exercise.id)
                         ? 'bg-muted font-medium text-foreground'
                         : 'text-foreground hover:bg-muted',
                     )}
                   >
-                    <input
-                      type="radio"
-                      name="recommend-exercise"
-                      className="h-4 w-4 shrink-0 accent-primary"
-                      checked={selectedId === exercise.id}
-                      onChange={() => setSelectedId(exercise.id)}
+                    <Checkbox
+                      checked={selectedIds.includes(exercise.id)}
+                      onChange={() => toggle(exercise.id)}
                     />
                     {exercise.title}
                   </label>
@@ -223,9 +237,18 @@ export function RecommendationsCard({
                 onChange={(e) => setNote(e.target.value)}
                 placeholder={t('dialog.notePlaceholder')}
               />
+              {/* One note for the whole batch: say so before they submit. */}
+              {selectedIds.length > 1 ? (
+                <p className="text-xs text-muted-foreground">
+                  {t('dialog.noteShared')}
+                </p>
+              ) : null}
             </div>
             <DialogFooter>
-              <Button type="submit" disabled={pending || selectedId == null}>
+              <Button
+                type="submit"
+                disabled={pending || selectedIds.length === 0}
+              >
                 {pending ? <Spinner /> : null}
                 {pending ? t('dialog.submitting') : t('dialog.submit')}
               </Button>

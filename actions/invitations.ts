@@ -81,6 +81,50 @@ export async function revokeSeat(input: {
   return { ok: true, data: undefined };
 }
 
+/**
+ * Reopens the 30-day resume window of an ended follow-up: the patient re-enters
+ * the code in the app and gets the SAME seat back (continuous history).
+ * `newCode: true` reissues a fresh code for that same seat — used when the old
+ * code has been reassigned in the meantime (`codeTaken`).
+ */
+export async function reactivateSeat(input: {
+  seatId: string;
+  newCode?: boolean;
+}): Promise<ActionResult<PatientSeat>> {
+  const supabase = createClient();
+  const { data, error } = await supabase.rpc('reactivate_seat', {
+    p_seat_id: input.seatId,
+    p_new_code: input.newCode ?? false,
+  });
+  if (error) return { ok: false, error: mapSupabaseError(error) };
+  if (!data) return { ok: false, error: 'generic' };
+
+  revalidatePath('/patients');
+  revalidatePath('/dashboard');
+  revalidatePath(`/patients/${input.seatId}`);
+  return { ok: true, data: data as PatientSeat };
+}
+
+/** Renames a seat (the practitioner's own, non-nominative label). */
+export async function renameSeat(input: {
+  seatId: string;
+  label: string;
+}): Promise<ActionResult> {
+  const supabase = createClient();
+  const label = input.label.trim().slice(0, 80) || null;
+
+  const { error } = await supabase
+    .from('patient_seats')
+    .update({ label })
+    .eq('id', input.seatId);
+  if (error) return { ok: false, error: mapSupabaseError(error) };
+
+  revalidatePath('/patients');
+  revalidatePath('/dashboard');
+  revalidatePath(`/patients/${input.seatId}`);
+  return { ok: true, data: undefined };
+}
+
 export async function deleteSeat(input: {
   seatId: string;
 }): Promise<ActionResult> {

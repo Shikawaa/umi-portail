@@ -24,9 +24,11 @@ function Tile({
 }
 
 /**
- * Summary tiles at the top of the patient fiche. One tile uses a progress ring
- * to show library coverage (distinct exercises explored / total). No score, no
- * clinical content — engagement metadata only.
+ * Stat tiles of the patient fiche. Deliberately white: the engagement color is
+ * carried by the summary card above them, not by the tiles. One tile uses a
+ * progress ring to show library coverage (distinct exercises explored / total)
+ * — the ring itself follows the engagement color.
+ * No score, no clinical content — engagement metadata only.
  */
 export function PatientStats({
   done,

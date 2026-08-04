@@ -75,6 +75,16 @@ Migrations are versioned files applied manually in **Studio > SQL Editor**
 4. `20260709120000_history_resume_delete.sql` - read-only history after
    unlink/revoke, resume-same-seat relink within a 30-day window
    (`resume_until`), and the `delete_seat` RPC.
+5. `20260710120000_pin_function_search_path.sql` - pins `search_path` on the two
+   remaining internal functions (Supabase advisor).
+6. `20260717100000_recommendations_seat_fk.sql` - rattache `recommendations` au
+   siège patient (`patient_seat_id`) plutôt qu'au couple praticien/patient,
+   avec unicité par siège et RLS mise à jour.
+7. `20260804120000_seat_reactivation_and_cleanup.sql` - engagement suspended
+   (`paused`) once a seat is no longer active, `reactivate_seat` RPC (reopen the
+   resume window, optionally reissuing the code on the same seat),
+   `delete_seat` accepting never-activated invitations, and a purge of
+   invitations previously cancelled as `revoked`.
 
 Optional demo data: `supabase/seed_demo_practitioner_1.sql` (idempotent, with a
 commented cleanup section) seeds test patients and completions.

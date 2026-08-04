@@ -14,7 +14,7 @@ import { ConfirmDialog } from '@/components/confirm-dialog';
 import { deleteSeat, revokeSeat } from '@/actions/invitations';
 import type { Assiduity, PatientUsage, SeatStatus } from '@/lib/types';
 
-const ASSIDUITY_OPTIONS: Assiduity[] = ['active', 'idle', 'never'];
+const ASSIDUITY_OPTIONS: Assiduity[] = ['active', 'idle', 'never', 'paused'];
 const STATUS_OPTIONS: SeatStatus[] = ['active', 'released', 'revoked', 'expired'];
 
 type GroupKey = 'engaged' | 'toReengage' | 'released' | 'ended';

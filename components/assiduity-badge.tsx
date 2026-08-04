@@ -2,29 +2,25 @@
 
 import { useTranslations } from 'next-intl';
 import { Badge, Dot } from '@/components/ui/badge';
+import { stateClass } from '@/lib/seats';
+import { cn } from '@/lib/utils';
 import type { Assiduity } from '@/lib/types';
 
-const STYLES: Record<Assiduity, { badge: string; dot: string }> = {
-  active: {
-    badge: 'border-transparent bg-accent text-accent-foreground',
-    dot: 'bg-primary',
-  },
-  idle: {
-    badge: 'border-border bg-muted text-muted-foreground',
-    dot: 'bg-muted-foreground',
-  },
-  never: {
-    badge: 'border-border bg-background text-muted-foreground',
-    dot: 'bg-border',
-  },
-};
-
+/**
+ * Engagement badge. Colors come from the `--state-*` tokens, set by the
+ * `.state-*` class on the badge itself so a list can mix states on one page:
+ * teal (engaged), amber (idle), red (never started), gray (paused).
+ */
 export function AssiduityBadge({ assiduity }: { assiduity: Assiduity }) {
   const t = useTranslations('badges');
-  const style = STYLES[assiduity] ?? STYLES.never;
   return (
-    <Badge className={style.badge}>
-      <Dot className={style.dot} />
+    <Badge
+      className={cn(
+        stateClass(assiduity),
+        'border-state-border bg-state-bg text-state-fg',
+      )}
+    >
+      <Dot className="bg-state" />
       {t(`assiduity.${assiduity}`)}
     </Badge>
   );

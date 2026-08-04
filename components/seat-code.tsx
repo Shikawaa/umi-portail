@@ -28,14 +28,15 @@ export function SeatCode({ code, label }: { code: string; label: string }) {
   return (
     <div className="flex items-center gap-2 text-sm">
       <span className="text-muted-foreground">{label}</span>
-      <code className="rounded-md border border-border bg-muted px-2 py-0.5 font-mono tracking-widest text-foreground">
+      {/* White chip so it reads on the tinted summary card of the fiche. */}
+      <code className="rounded-md border border-border bg-background px-2 py-0.5 font-mono tracking-widest text-foreground">
         {code}
       </code>
       <button
         type="button"
         onClick={copy}
         aria-label={tCommon('copy')}
-        className="inline-flex items-center rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        className="inline-flex items-center rounded-md p-1 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
       >
         {copied ? (
           <Check className="h-3.5 w-3.5" />

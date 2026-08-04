@@ -22,8 +22,12 @@ import { DayActivity } from '@/components/day-activity';
 import { PatientStats } from '@/components/patient-stats';
 import { RecommendationsCard } from '@/components/recommendations-card';
 import { SeatCode } from '@/components/seat-code';
+import { SeatLabelEditor } from '@/components/seat-label-editor';
+import { ReactivateCodeButton } from '@/components/reactivate-code-button';
 import { buildDailyBuckets } from '@/lib/activity';
 import { formatDate, formatRelativeDay } from '@/lib/format';
+import { canReactivate, isResumable, stateClass } from '@/lib/seats';
+import { cn } from '@/lib/utils';
 import type {
   Assiduity,
   PatientSeat,
@@ -45,14 +49,23 @@ export default async function PatientFollowUpPage({
 
   const [
     { data: seatData },
-    { data: { user } },
+    {
+      data: { user },
+    },
     { data: usageData },
-    { data: exData }
+    { data: exData },
   ] = await Promise.all([
     supabase.from('patient_seats').select('*').eq('id', seatId).maybeSingle(),
     supabase.auth.getUser(),
-    supabase.from('v_patient_usage').select('*').eq('seat_id', seatId).maybeSingle(),
-    supabase.from('exercises').select('id, titre, titre_en').order('id', { ascending: true })
+    supabase
+      .from('v_patient_usage')
+      .select('*')
+      .eq('seat_id', seatId)
+      .maybeSingle(),
+    supabase
+      .from('exercises')
+      .select('id, titre, titre_en')
+      .order('id', { ascending: true }),
   ]);
 
   if (!user || !seatData) notFound();
@@ -67,8 +80,10 @@ export default async function PatientFollowUpPage({
   // Pick the exercise title in the portal locale, falling back to French when
   // a row has no English translation yet.
   const isEnglish = locale === 'en';
-  const exerciseTitle = (e: { titre: string | null; titre_en: string | null }) =>
-    (isEnglish ? e.titre_en || e.titre : e.titre)?.trim() || null;
+  const exerciseTitle = (e: {
+    titre: string | null;
+    titre_en: string | null;
+  }) => (isEnglish ? e.titre_en || e.titre : e.titre)?.trim() || null;
 
   let completions: { exercise_id: number; completed_at: string }[] = [];
   let recommendations: Recommendation[] = [];
@@ -155,10 +170,8 @@ export default async function PatientFollowUpPage({
     seat.status === 'revoked' ||
     seat.status === 'released' ||
     seat.status === 'expired';
-  const resumable =
-    (seat.status === 'released' || seat.status === 'revoked') &&
-    seat.resume_until != null &&
-    new Date(seat.resume_until).getTime() > Date.now();
+  const resumable = isResumable(seat);
+  const reactivable = canReactivate(seat);
   const totalCompletions = usage?.completions_total ?? 0;
   const assiduity: Assiduity = usage?.assiduity ?? 'never';
   const exploredCount = byExercise.size;
@@ -166,8 +179,19 @@ export default async function PatientFollowUpPage({
   const lastActivityLabel =
     formatRelativeDay(usage?.last_completed_at, locale) ?? t('stats.none');
 
+  // `.state-*` carries the engagement color tokens and `.state-accent` maps the
+  // page accent onto them (see globals.css): the summary card below is tinted
+  // with the patient's engagement color, and everything that used to be teal
+  // (check circles, progress ring, activity bars, buttons) follows it. All the
+  // other cards stay white.
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <div
+      className={cn(
+        'mx-auto max-w-4xl space-y-6',
+        stateClass(assiduity),
+        'state-accent',
+      )}
+    >
       <Link
         href="/patients"
         className={buttonVariants({
@@ -180,26 +204,36 @@ export default async function PatientFollowUpPage({
         {t('back')}
       </Link>
 
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="space-y-2">
-          <h2 className="text-xl font-semibold text-foreground">{label}</h2>
-          <div className="flex flex-wrap items-center gap-2">
-            <SeatStatusBadge status={seat.status} />
-            <AssiduityBadge assiduity={assiduity} />
+      {/* Summary card: the only tinted surface of the fiche. */}
+      <Card className="border-state-border bg-state-surface p-5">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="space-y-2">
+            <SeatLabelEditor
+              seatId={seat.id}
+              label={seat.label}
+              fallback={tPatients('row.noLabel')}
+            />
+            <div className="flex flex-wrap items-center gap-2">
+              <SeatStatusBadge status={seat.status} resumable={resumable} />
+              <AssiduityBadge assiduity={assiduity} />
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {seat.redeemed_at
+                ? t('attachedSince', {
+                    date: formatDate(seat.redeemed_at, locale) ?? '',
+                  })
+                : t('notAttached')}
+            </p>
+            {seat.invite_code ? (
+              <div className="flex flex-wrap items-center gap-3">
+                <SeatCode code={seat.invite_code} label={t('code.label')} />
+                {reactivable ? <ReactivateCodeButton seatId={seat.id} /> : null}
+              </div>
+            ) : null}
           </div>
-          <p className="text-sm text-muted-foreground">
-            {seat.redeemed_at
-              ? t('attachedSince', {
-                  date: formatDate(seat.redeemed_at, locale) ?? '',
-                })
-              : t('notAttached')}
-          </p>
-          {seat.invite_code ? (
-            <SeatCode code={seat.invite_code} label={t('code.label')} />
-          ) : null}
+          {isActive ? <EndFollowUpButton seatId={seat.id} /> : null}
         </div>
-        {isActive ? <EndFollowUpButton seatId={seat.id} /> : null}
-      </div>
+      </Card>
 
       {isEnded ? (
         <div className="rounded-lg border border-border bg-muted px-4 py-3 text-sm text-muted-foreground">

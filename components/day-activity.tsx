@@ -2,8 +2,9 @@ import { cn } from '@/lib/utils';
 import type { DayBucket } from '@/lib/activity';
 
 /**
- * Vertical bar chart of daily activity. Teal bars for days with completions,
- * light-gray stubs for empty days. Optional weekday labels under the columns.
+ * Vertical bar chart of daily activity. Bars in the current engagement color
+ * (`--state-*`, inherited from the `.state-*` container — teal by default),
+ * soft stubs for empty days. Optional weekday labels under the columns.
  * Server-renderable (no client hooks) — titles/aria text are precomputed.
  */
 export function DayActivity({
@@ -46,8 +47,8 @@ export function DayActivity({
               className={cn(
                 'w-full rounded-sm transition-colors',
                 b.count > 0
-                  ? 'bg-primary group-hover:bg-primary-hover'
-                  : 'bg-muted group-hover:bg-border',
+                  ? 'bg-state group-hover:bg-state-fg'
+                  : 'bg-state-soft group-hover:bg-state-border',
               )}
               style={{
                 height: `${(b.count / max) * 100}%`,

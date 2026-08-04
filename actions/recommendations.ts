@@ -6,13 +6,20 @@ import { mapSupabaseError } from '@/lib/errors';
 import type { ActionResult } from '@/lib/action-result';
 import type { Recommendation } from '@/lib/types';
 
-export async function addRecommendation(input: {
+/**
+ * Recommends one or several exercises at once (the practitioner picks them in a
+ * single pass). The optional note is shared by every exercise of the batch: the
+ * insert is one statement, so it either lands entirely or not at all.
+ */
+export async function addRecommendations(input: {
   seatId: string;
-  exerciseId: number;
+  exerciseIds: number[];
   note?: string;
-}): Promise<ActionResult<Recommendation>> {
+}): Promise<ActionResult<Recommendation[]>> {
   const supabase = createClient();
   const note = input.note?.trim() || null;
+  const exerciseIds = [...new Set(input.exerciseIds)];
+  if (exerciseIds.length === 0) return { ok: false, error: 'generic' };
 
   const {
     data: { user },
@@ -32,25 +39,26 @@ export async function addRecommendation(input: {
       .filter(Boolean)
       .join(' ') || null;
 
-  // The recommendation belongs to the seat; RLS (with check) guarantees the
+  // The recommendations belong to the seat; RLS (with check) guarantees the
   // seat is owned by the signed-in practitioner. Translation is not wired up
   // on this part of the app yet: write the same note in both locales.
   // `is_active` is not used yet, always true.
   const { data, error } = await supabase
     .from('recommendations')
-    .insert({
-      patient_seat_id: input.seatId,
-      exercise_id: String(input.exerciseId),
-      note,
-      note_en: note,
-      practitioner_name: practitionerName,
-      is_active: true,
-    })
-    .select()
-    .single();
+    .insert(
+      exerciseIds.map((exerciseId) => ({
+        patient_seat_id: input.seatId,
+        exercise_id: String(exerciseId),
+        note,
+        note_en: note,
+        practitioner_name: practitionerName,
+        is_active: true,
+      })),
+    )
+    .select();
   if (error) {
-    // Unique (seat, exercise): the exercise is already recommended. The UI
-    // hides those, but guard against double submits.
+    // Unique (seat, exercise): one of them is already recommended. The UI hides
+    // those, but guard against double submits and stale pickers.
     if (error.code === '23505') return { ok: false, error: 'alreadyRecommended' };
     // RLS rejection: the seat does not belong to this practitioner.
     if (error.code === '42501') return { ok: false, error: 'notOwner' };
@@ -58,7 +66,7 @@ export async function addRecommendation(input: {
   }
 
   revalidatePath(`/patients/${input.seatId}`);
-  return { ok: true, data: data as Recommendation };
+  return { ok: true, data: (data ?? []) as Recommendation[] };
 }
 
 export async function removeRecommendation(input: {

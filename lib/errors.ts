@@ -9,6 +9,9 @@ export type AppErrorKey =
   | 'seatNotActiveOrInvited'
   | 'seatNotDeletable'
   | 'alreadyRecommended'
+  | 'seatNotReactivable'
+  | 'seatNeverAttached'
+  | 'codeTaken'
   | 'codeGenerationFailed'
   | 'invalidCredentials'
   | 'emailNotConfirmed'
@@ -34,6 +37,9 @@ export function mapSupabaseError(error: unknown): AppErrorKey {
   if (msg.includes('not_owner')) return 'notOwner';
   if (msg.includes('seat_not_active_or_invited')) return 'seatNotActiveOrInvited';
   if (msg.includes('seat_not_deletable')) return 'seatNotDeletable';
+  if (msg.includes('seat_not_reactivable')) return 'seatNotReactivable';
+  if (msg.includes('seat_never_attached')) return 'seatNeverAttached';
+  if (msg.includes('code_taken')) return 'codeTaken';
   if (msg.includes('seat_not_invited')) return 'seatNotInvited';
   if (msg.includes('code_generation_failed')) return 'codeGenerationFailed';
 

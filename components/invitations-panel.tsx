@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { ChevronDown, RotateCw, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/confirm-dialog';
-import { regenerateCode, revokeSeat } from '@/actions/invitations';
+import { deleteSeat, regenerateCode } from '@/actions/invitations';
 import { formatDate } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
@@ -39,12 +39,14 @@ export function InvitationsPanel({ pending }: { pending: PendingSeat[] }) {
     });
   }
 
+  // A code that was never redeemed carries no history: cancelling deletes the
+  // seat outright (and frees the code) instead of leaving a `revoked` row.
   function confirmRevoke() {
     if (!revokeTarget) return;
     const id = revokeTarget.id;
     setBusyId(id);
     startTx(async () => {
-      const res = await revokeSeat({ seatId: id });
+      const res = await deleteSeat({ seatId: id });
       setBusyId(null);
       if (res.ok) {
         toast.success(t('toast.inviteCancelled'));

@@ -187,7 +187,16 @@
     "notAttached": "Pas encore rattaché",
     "endFollowUp": "Mettre fin au suivi",
     "code": {
-      "label": "Code de rattachement :"
+      "label": "Code de rattachement :",
+      "reactivate": "Réactiver le code",
+      "reactivating": "Réactivation…",
+      "reactivateHint": "Réactiver le code pour que ce patient puisse se relier à nouveau."
+    },
+    "rename": {
+      "edit": "Renommer le patient",
+      "label": "Libellé du patient",
+      "hint": "Un repère non nominatif, par ex. des initiales.",
+      "placeholder": "Sans libellé"
     },
     "stats": {
       "done": "Exercices faits",
@@ -199,12 +208,14 @@
     },
     "exercises": {
       "title": "Exercices",
-      "subtitle": "Fait ou non fait, sur la période de rattachement.",
+      "subtitle": "Du plus pratiqué au moins pratiqué, sur la période de rattachement.",
       "done": "Fait",
       "notDone": "Non fait",
       "times": "{count, plural, one {# fois} other {# fois}}",
       "lastDate": "Dernière fois le {date}",
-      "empty": "Aucun exercice dans la bibliothèque."
+      "empty": "Aucun exercice dans la bibliothèque.",
+      "showAll": "Voir les {count, plural, one {# autre exercice} other {# autres exercices}}",
+      "showLess": "Voir moins"
     },
     "activity": {
       "title": "Activité",
@@ -216,18 +227,20 @@
     "recommendations": {
       "title": "Exercices recommandés",
       "subtitle": "Mis en avant pour ce patient dans l'app UMi.",
-      "addPlaceholder": "Recommander un exercice",
+      "addPlaceholder": "Recommander des exercices",
       "allAdded": "Tous les exercices de la bibliothèque ont été recommandés.",
       "addedOn": "Recommandé le {date}",
       "remove": "Retirer la recommandation",
       "dialog": {
-        "title": "Recommander un exercice",
-        "description": "Choisissez un exercice et ajoutez si besoin une note visible par le patient.",
-        "exerciseLabel": "Exercice",
+        "title": "Recommander des exercices",
+        "description": "Sélectionnez un ou plusieurs exercices et ajoutez si besoin une note visible par le patient.",
+        "exerciseLabel": "Exercices",
         "noteLabel": "Note pour le patient",
         "notePlaceholder": "Par ex. : à pratiquer avant de dormir.",
         "submit": "Recommander",
-        "submitting": "Ajout…"
+        "submitting": "Ajout…",
+        "selectedCount": "{count, plural, one {# sélectionné} other {# sélectionnés}}",
+        "noteShared": "La même note sera ajoutée à chaque exercice sélectionné."
       },
       "confirmRemove": {
         "title": "Retirer cette recommandation ?",
@@ -237,7 +250,7 @@
         "cancel": "Annuler"
       },
       "toast": {
-        "added": "Exercice recommandé.",
+        "added": "{count, plural, one {# exercice recommandé.} other {# exercices recommandés.}}",
         "removed": "Recommandation retirée."
       }
     },
@@ -246,7 +259,10 @@
     "resumeBanner": "Suivi terminé, cette fiche est en lecture seule. Le patient peut reprendre son suivi jusqu'au {date} en ressaisissant le code ci-dessus dans l'app.",
     "notFound": "Patient introuvable.",
     "toast": {
-      "revoked": "Suivi terminé."
+      "revoked": "Suivi terminé.",
+      "reactivated": "Code réactivé. Le patient peut se relier avec ce code.",
+      "codeReissued": "Nouveau code généré. Transmettez-le au patient pour qu'il se relie.",
+      "renamed": "Libellé mis à jour."
     }
   },
   "invite": {
@@ -287,10 +303,17 @@
   },
   "confirmRevokeInvite": {
     "title": "Annuler l'invitation ?",
-    "body": "Le code deviendra invalide et ne pourra plus être utilisé par le patient.",
+    "body": "Cette invitation n'a jamais été activée : elle sera supprimée de votre portail et son code redeviendra disponible. Cette action est irréversible.",
     "confirm": "Annuler l'invitation",
     "confirming": "En cours…",
     "cancel": "Retour"
+  },
+  "confirmReissueCode": {
+    "title": "Ce code est déjà utilisé",
+    "body": "Ce code a été réattribué à un autre patient depuis la fin du suivi. Générez un nouveau code pour ce patient : sa fiche et tout son historique sont conservés.",
+    "confirm": "Régénérer un code",
+    "confirming": "Génération…",
+    "cancel": "Annuler"
   },
   "settings": {
     "title": "Réglages",
@@ -329,12 +352,14 @@
       "released": "Délié",
       "revoked": "Révoqué",
       "expired": "Expiré",
-      "paused": "En pause"
+      "paused": "En pause",
+      "resumable": "Reprise possible"
     },
     "assiduity": {
       "active": "Engagé",
       "idle": "En veille",
-      "never": "Jamais commencé"
+      "never": "Jamais commencé",
+      "paused": "En pause"
     }
   },
   "errors": {
@@ -344,6 +369,9 @@
     "seatNotActiveOrInvited": "Ce siège ne peut pas être révoqué dans son état actuel.",
     "seatNotDeletable": "Ce patient ne peut pas être supprimé dans son état actuel.",
     "alreadyRecommended": "Cet exercice est déjà recommandé à ce patient.",
+    "seatNotReactivable": "Le code ne peut être réactivé que sur un suivi terminé.",
+    "seatNeverAttached": "Ce patient ne s'est jamais relié : créez une nouvelle invitation.",
+    "codeTaken": "Ce code est déjà utilisé par un autre patient.",
     "codeGenerationFailed": "La génération du code a échoué. Réessayez.",
     "invalidCredentials": "Email ou mot de passe incorrect.",
     "emailNotConfirmed": "Votre email n'est pas encore confirmé. Vérifiez votre boîte de réception.",

@@ -31,6 +31,77 @@
     --destructive-foreground: 0 0% 100%;
 
     --radius: 0.5rem;
+
+    /* Engagement (assiduity) state — contextual tokens. Defaults to teal; the
+       `.state-*` classes below override them for a subtree (patient fiche) or
+       for a single element (assiduity badge in the patient list).
+       `--state`: charts and small text. `--state-solid`: filled surfaces that
+       carry white text (dark enough for AA). `--state-fg`: darkest, hover and
+       values. `--state-bg`: badge tint. `--state-surface`: lightest, the summary
+       card of the fiche (kept lighter than `--state-bg` so badges detach). */
+    --state: 172 51% 31%;
+    --state-solid: 172 51% 31%;
+    --state-fg: 174 55% 20%;
+    --state-bg: 170 73% 94%;
+    --state-border: 171 40% 82%;
+    --state-soft: 170 55% 91%;
+    --state-surface: 0 0% 100%;
+  }
+
+  /* Engaged — the brand teal (≥ 1 exercise in the last 7 days). */
+  .state-active {
+    --state: 172 51% 31%;
+    --state-solid: 172 51% 31%;
+    --state-fg: 174 55% 20%;
+    --state-bg: 170 73% 94%;
+    --state-border: 171 40% 82%;
+    --state-soft: 170 55% 91%;
+    --state-surface: 170 62% 96%;
+  }
+
+  /* Idle — amber: nothing for 7 days, worth a nudge. */
+  .state-idle {
+    --state: 35 78% 41%;
+    --state-solid: 32 84% 32%;
+    --state-fg: 32 84% 29%;
+    --state-bg: 37 86% 94%;
+    --state-border: 36 65% 82%;
+    --state-soft: 38 78% 91%;
+    --state-surface: 38 80% 95%;
+  }
+
+  /* Never started — red: attached but no exercise at all yet. */
+  .state-never {
+    --state: 0 53% 50%;
+    --state-solid: 0 53% 45%;
+    --state-fg: 0 57% 34%;
+    --state-bg: 3 82% 96%;
+    --state-border: 2 60% 88%;
+    --state-soft: 2 70% 94%;
+    --state-surface: 3 78% 96%;
+  }
+
+  /* Paused — gray: follow-up no longer active, engagement is suspended. */
+  .state-paused {
+    --state: 0 0% 45%;
+    --state-solid: 0 0% 35%;
+    --state-fg: 0 0% 26%;
+    --state-bg: 0 0% 96%;
+    --state-border: 0 0% 88%;
+    --state-soft: 0 0% 93%;
+    --state-surface: 0 0% 96%;
+  }
+
+  /* Remaps the global accent tokens onto the engagement color for a subtree
+     (the patient fiche): everything that was teal — filled buttons, the check
+     circles of the exercise list, focus rings — follows the patient's state
+     instead. Combine with a `.state-*` class, which supplies the values. */
+  .state-accent {
+    --primary: var(--state-solid);
+    --primary-hover: var(--state-fg);
+    --accent: var(--state-bg);
+    --accent-foreground: var(--state-fg);
+    --ring: var(--state-solid);
   }
 }
 

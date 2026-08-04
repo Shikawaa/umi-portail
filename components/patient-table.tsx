@@ -21,6 +21,7 @@ import {
 import { SeatStatusBadge } from '@/components/seat-status-badge';
 import { AssiduityBadge } from '@/components/assiduity-badge';
 import { formatDate } from '@/lib/format';
+import { isResumable } from '@/lib/seats';
 import type { PatientUsage } from '@/lib/types';
 
 const DELETABLE_STATUSES = new Set(['released', 'revoked', 'expired']);
@@ -72,7 +73,7 @@ export function PatientTable({
                 </Link>
               </TableCell>
               <TableCell>
-                <SeatStatusBadge status={p.status} />
+                <SeatStatusBadge status={p.status} resumable={isResumable(p)} />
               </TableCell>
               <TableCell>
                 <AssiduityBadge assiduity={p.assiduity} />

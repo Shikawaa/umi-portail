@@ -31,8 +31,29 @@ const STYLES: Record<SeatStatus, { badge: string; dot: string }> = {
   },
 };
 
-export function SeatStatusBadge({ status }: { status: SeatStatus }) {
+/** Style of an ended seat whose code can still be re-entered by the patient. */
+const RESUMABLE_STYLE = {
+  badge: 'border-border bg-muted text-foreground',
+  dot: 'bg-primary/70',
+};
+
+export function SeatStatusBadge({
+  status,
+  resumable = false,
+}: {
+  status: SeatStatus;
+  /** Ended follow-up with an open resume window (`resume_until` in the future). */
+  resumable?: boolean;
+}) {
   const t = useTranslations('badges');
+  if (resumable) {
+    return (
+      <Badge className={RESUMABLE_STYLE.badge}>
+        <Dot className={RESUMABLE_STYLE.dot} />
+        {t('seat.resumable')}
+      </Badge>
+    );
+  }
   const style = STYLES[status] ?? STYLES.invited;
   return (
     <Badge className={style.badge}>

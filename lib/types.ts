@@ -8,7 +8,12 @@ export type SeatStatus =
   | 'released'
   | 'expired';
 
-export type Assiduity = 'never' | 'active' | 'idle';
+/**
+ * Engagement over the last 7 days. `paused` = the seat is no longer active
+ * (revoked / released / expired), so engagement is suspended: it resumes as
+ * soon as the patient is attached again (migration 0006).
+ */
+export type Assiduity = 'never' | 'active' | 'idle' | 'paused';
 
 export interface Practitioner {
   id: string;
@@ -49,6 +54,7 @@ export interface PatientUsage {
   completions_30d: number;
   last_completed_at: string | null;
   assiduity: Assiduity;
+  resume_until: string | null;
 }
 
 export interface Exercise {
