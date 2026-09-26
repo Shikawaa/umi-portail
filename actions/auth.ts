@@ -31,6 +31,10 @@ export async function signUp(input: {
   password: string;
   firstName: string;
   lastName: string;
+  city?: string;
+  description?: string;
+  languages?: string[];
+  education?: Array<{ title: string; institution: string }>;
 }): Promise<ActionResult> {
   const supabase = createClient();
   const locale = currentLocale();
@@ -39,8 +43,14 @@ export async function signUp(input: {
     password: input.password,
     options: {
       data: {
-        first_name: input.firstName || null,
-        last_name: input.lastName || null,
+        first_name: input.firstName.trim() || null,
+        last_name: input.lastName.trim() || null,
+        city: input.city?.trim() || null,
+        description: input.description?.trim() || null,
+        languages: (input.languages ?? []).map((l) => l.trim()).filter(Boolean),
+        education: (input.education ?? []).filter(
+          (e) => e.title?.trim() || e.institution?.trim(),
+        ),
         locale,
         role: 'practitioner',
       },

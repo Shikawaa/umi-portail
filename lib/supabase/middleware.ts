@@ -38,6 +38,37 @@ export async function updateSession(request: NextRequest, response?: NextRespons
     return supabaseResponse;
   }
 
+  // Check if there are any Supabase auth cookies present
+  const allCookies = request.cookies.getAll();
+  const hasAuthCookie = allCookies.some((c) => c.name.includes('-auth-token'));
+
+  const { pathname } = request.nextUrl;
+  const stripped = stripLocale(pathname);
+
+  // Extract locale prefix if present
+  let localePrefix = '';
+  const parts = pathname.split('/');
+  if (parts.length > 1 && (parts[1] === 'fr' || parts[1] === 'en')) {
+    localePrefix = '/' + parts[1];
+  }
+
+  // Fast-path: if unauthenticated without any auth cookie trying to access protected route
+  if (!hasAuthCookie && isProtected(pathname)) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = `${localePrefix}/login`;
+    redirectUrl.search = '';
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  // Next.js client-side router prefetch: bypass remote getUser() call to keep link hovers fast
+  const isPrefetch =
+    request.headers.get('next-router-prefetch') === '1' ||
+    request.headers.get('purpose') === 'prefetch';
+
+  if (isPrefetch) {
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(url, anonKey, {
     cookies: {
       getAll() {
@@ -57,16 +88,6 @@ export async function updateSession(request: NextRequest, response?: NextRespons
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { pathname } = request.nextUrl;
-  const stripped = stripLocale(pathname);
-  
-  // Extract locale prefix if present
-  let localePrefix = '';
-  const parts = pathname.split('/');
-  if (parts.length > 1 && (parts[1] === 'fr' || parts[1] === 'en')) {
-    localePrefix = '/' + parts[1];
-  }
 
   if (!user && isProtected(pathname)) {
     const redirectUrl = request.nextUrl.clone();

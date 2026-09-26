@@ -41,23 +41,23 @@ export function AccountMenu({
         <button
           type="button"
           aria-label={t('menu')}
-          className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
         >
           <span
             aria-hidden="true"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm"
           >
-            <User className="h-4 w-4" />
+            <User className="h-5 w-5" />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-sm font-medium text-foreground">
+            <span className="block truncate text-sm font-semibold text-foreground">
               {name || email}
             </span>
-            <span className="block truncate text-xs text-muted-foreground">
+            <span className="block truncate text-xs text-muted-foreground font-mono">
               #{practitionerNumber}
             </span>
           </span>
-          <ChevronsUpDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+          <ChevronsUpDown className="h-4 w-4 shrink-0 text-muted-foreground/70" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top" align="start" className="w-56">

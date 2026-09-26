@@ -43,6 +43,10 @@ export default async function AppLayout({
         id: user.id,
         first_name: typeof meta.first_name === 'string' ? meta.first_name : null,
         last_name: typeof meta.last_name === 'string' ? meta.last_name : null,
+        city: typeof meta.city === 'string' ? meta.city : null,
+        description: typeof meta.description === 'string' ? meta.description : null,
+        languages: Array.isArray(meta.languages) ? meta.languages : [],
+        education: Array.isArray(meta.education) ? meta.education : [],
         locale,
       })
       .select('*')

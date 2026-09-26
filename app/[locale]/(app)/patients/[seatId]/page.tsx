@@ -2,7 +2,8 @@ import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, getCachedUser } from '@/lib/supabase/server';
+import { getCachedWorkingExercises } from '@/lib/exercises';
 import {
   Card,
   CardContent,
@@ -49,33 +50,23 @@ export default async function PatientFollowUpPage({
 
   const [
     { data: seatData },
-    {
-      data: { user },
-    },
+    { user },
     { data: usageData },
-    { data: exData },
+    exercises,
   ] = await Promise.all([
     supabase.from('patient_seats').select('*').eq('id', seatId).maybeSingle(),
-    supabase.auth.getUser(),
+    getCachedUser(),
     supabase
       .from('v_patient_usage')
       .select('*')
       .eq('seat_id', seatId)
       .maybeSingle(),
-    supabase
-      .from('exercises')
-      .select('id, titre, titre_en')
-      .order('id', { ascending: true }),
+    getCachedWorkingExercises(),
   ]);
 
   if (!user || !seatData) notFound();
   const seat = seatData as PatientSeat;
   const usage = usageData as PatientUsage | null;
-  const exercises = (exData ?? []) as {
-    id: number;
-    titre: string | null;
-    titre_en: string | null;
-  }[];
 
   // Pick the exercise title in the portal locale, falling back to French when
   // a row has no English translation yet.
@@ -187,7 +178,7 @@ export default async function PatientFollowUpPage({
   return (
     <div
       className={cn(
-        'mx-auto max-w-4xl space-y-6',
+        'mx-auto max-w-5xl space-y-8',
         stateClass(assiduity),
         'state-accent',
       )}
@@ -197,7 +188,7 @@ export default async function PatientFollowUpPage({
         className={buttonVariants({
           variant: 'ghost',
           size: 'sm',
-          className: '-ml-2',
+          className: '-ml-2 text-sm font-medium gap-2 text-muted-foreground hover:text-foreground',
         })}
       >
         <ArrowLeft className="h-4 w-4" />
@@ -205,15 +196,15 @@ export default async function PatientFollowUpPage({
       </Link>
 
       {/* Summary card: the only tinted surface of the fiche. */}
-      <Card className="border-state-border bg-state-surface p-5">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="space-y-2">
+      <Card className="border-state-border bg-state-surface p-7 rounded-2xl shadow-xs">
+        <div className="flex flex-wrap items-start justify-between gap-6">
+          <div className="space-y-3">
             <SeatLabelEditor
               seatId={seat.id}
               label={seat.label}
               fallback={tPatients('row.noLabel')}
             />
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2.5">
               <SeatStatusBadge status={seat.status} resumable={resumable} />
               <AssiduityBadge assiduity={assiduity} />
             </div>
@@ -225,7 +216,7 @@ export default async function PatientFollowUpPage({
                 : t('notAttached')}
             </p>
             {seat.invite_code ? (
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3 pt-1">
                 <SeatCode code={seat.invite_code} label={t('code.label')} />
                 {reactivable ? <ReactivateCodeButton seatId={seat.id} /> : null}
               </div>
@@ -236,7 +227,7 @@ export default async function PatientFollowUpPage({
       </Card>
 
       {isEnded ? (
-        <div className="rounded-lg border border-border bg-muted px-4 py-3 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-border bg-muted px-5 py-4 text-sm text-muted-foreground shadow-2xs">
           {resumable
             ? t('resumeBanner', {
                 date: formatDate(seat.resume_until, locale) ?? '',
@@ -269,18 +260,18 @@ export default async function PatientFollowUpPage({
       ) : null}
 
       {isActive && totalCompletions === 0 ? (
-        <div className="rounded-lg border border-dashed border-border bg-card px-4 py-6 text-center text-sm text-muted-foreground">
+        <div className="rounded-2xl border border-dashed border-border bg-card px-6 py-8 text-center text-sm text-muted-foreground shadow-2xs">
           {t('neverStarted', { label })}
         </div>
       ) : null}
 
-      <div className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">{t('activity.title')}</CardTitle>
-            <CardDescription>{t('activity.subtitle')}</CardDescription>
+      <div className="space-y-8">
+        <Card className="rounded-2xl border border-border/80 shadow-2xs overflow-hidden">
+          <CardHeader className="p-6 pb-4">
+            <CardTitle className="text-lg font-bold text-foreground">{t('activity.title')}</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground">{t('activity.subtitle')}</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6 pt-0">
             <DayActivity
               buckets={activityBuckets}
               ariaLabel={t('activity.title')}
@@ -288,18 +279,18 @@ export default async function PatientFollowUpPage({
               emptyLabel={t('activity.empty')}
             />
             {activityTotal > 0 ? (
-              <p className="mt-4 border-t border-border pt-3 text-sm text-muted-foreground">
+              <p className="mt-5 border-t border-border/80 pt-3 text-sm font-medium text-muted-foreground">
                 {t('activity.total', { count: activityTotal })}
               </p>
             ) : null}
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">{t('exercises.title')}</CardTitle>
-            <CardDescription>{t('exercises.subtitle')}</CardDescription>
+        <Card className="rounded-2xl border border-border/80 shadow-2xs overflow-hidden">
+          <CardHeader className="p-6 pb-4">
+            <CardTitle className="text-lg font-bold text-foreground">{t('exercises.title')}</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground">{t('exercises.subtitle')}</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6 pt-0">
             <ExerciseCompletionList items={items} />
           </CardContent>
         </Card>

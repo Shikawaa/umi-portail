@@ -8,7 +8,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium',
+        'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs sm:text-[13px] font-semibold transition-colors shadow-2xs leading-none',
         className,
       )}
       {...props}
@@ -20,7 +20,7 @@ export function Dot({ className }: { className?: string }) {
   return (
     <span
       aria-hidden="true"
-      className={cn('h-1.5 w-1.5 rounded-full', className)}
+      className={cn('h-2 w-2 rounded-full shrink-0', className)}
     />
   );
 }

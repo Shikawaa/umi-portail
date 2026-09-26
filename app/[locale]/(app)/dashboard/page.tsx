@@ -38,12 +38,10 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
   const tPatients = await getTranslations('patients');
   const supabase = createClient();
 
-  const { user } = await getCachedUser();
-  const practitioner = await getCachedPractitioner();
-
-  const { data: usageData, error } = await supabase
-    .from('v_patient_usage')
-    .select('*');
+  const [practitioner, { data: usageData, error }] = await Promise.all([
+    getCachedPractitioner(),
+    supabase.from('v_patient_usage').select('*'),
+  ]);
   if (error) throw new Error(error.message);
 
   const usage = (usageData ?? []) as PatientUsage[];
@@ -112,14 +110,14 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
     <div className="mx-auto max-w-6xl space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             {firstName ? t('greeting', { name: firstName }) : t('greetingNoName')}
           </h2>
-          <p className="text-sm text-muted-foreground">{t('subtitle')}</p>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">{t('subtitle')}</p>
         </div>
         <InviteDialog
           trigger={
-            <Button>
+            <Button className="h-11 px-5 text-sm gap-2 rounded-xl shadow-xs">
               <UserPlus className="h-4 w-4" />
               {t('invite')}
             </Button>
@@ -135,7 +133,7 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
           action={
             <InviteDialog
               trigger={
-                <Button>
+                <Button className="h-11 px-5 text-sm gap-2 rounded-xl shadow-xs">
                   <UserPlus className="h-4 w-4" />
                   {t('empty.cta')}
                 </Button>
@@ -164,60 +162,60 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
             />
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">
+          <Card className="rounded-2xl border border-border/80 shadow-2xs overflow-hidden">
+            <CardHeader className="p-6 pb-4">
+              <CardTitle className="text-lg font-bold text-foreground">
                 {t('recentActivity.title')}
               </CardTitle>
-              <CardDescription>{t('recentActivity.subtitle')}</CardDescription>
+              <CardDescription className="text-sm text-muted-foreground">{t('recentActivity.subtitle')}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6 pt-0">
               {recentRows.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground py-4">
                   {t('recentActivity.empty')}
                 </p>
               ) : (
-                <ul className="divide-y divide-border">
+                <ul className="divide-y divide-border/70">
                   {recentRows.map((r) => (
                     <li key={r.seatId}>
                       <Link
                         href={`/patients/${r.seatId}`}
-                        className="-mx-2 flex items-center gap-4 rounded-md px-2 py-3 transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="-mx-3 flex items-center gap-4 rounded-xl px-4 py-4 transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
                       >
                         <span
                           aria-hidden="true"
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-accent-foreground"
+                          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary"
                         >
                           {r.initials}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-medium text-foreground">
+                          <span className="block truncate text-base font-semibold text-foreground">
                             {r.label}
                           </span>
                           {r.lastActivity ? (
-                            <span className="block truncate text-xs text-muted-foreground">
+                            <span className="block truncate text-xs text-muted-foreground mt-0.5">
                               {r.lastActivity}
                             </span>
                           ) : null}
                         </span>
-                        <div className="hidden w-28 shrink-0 sm:block">
+                        <div className="hidden w-32 shrink-0 sm:block">
                           <LineSparkline
                             values={r.values}
                             titles={r.titles}
                             ariaLabel={t('recentActivity.ariaLabel')}
                           />
                         </div>
-                        <span className="w-16 shrink-0 text-right">
-                          <span className="block text-lg font-semibold tabular-nums text-foreground">
+                        <span className="w-20 shrink-0 text-right">
+                          <span className="block text-xl font-bold tabular-nums text-foreground">
                             {r.count}
                           </span>
-                          <span className="block text-[10px] leading-none text-muted-foreground">
+                          <span className="block text-xs text-muted-foreground">
                             {t('recentActivity.unit')}
                           </span>
                         </span>
                         <ChevronRight
                           aria-hidden="true"
-                          className="h-4 w-4 shrink-0 text-muted-foreground"
+                          className="h-5 w-5 shrink-0 text-muted-foreground/60"
                         />
                       </Link>
                     </li>

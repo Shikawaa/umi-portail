@@ -15,11 +15,21 @@ export type SeatStatus =
  */
 export type Assiduity = 'never' | 'active' | 'idle' | 'paused';
 
+export interface EducationItem {
+  title: string;
+  institution: string;
+}
+
 export interface Practitioner {
   id: string;
   practitioner_number: number;
   first_name: string | null;
   last_name: string | null;
+  city: string | null;
+  description: string | null;
+  languages: string[] | null;
+  education: EducationItem[] | null;
+  photo_url: string | null;
   locale: string;
   created_at: string;
   updated_at: string;
@@ -64,6 +74,8 @@ export interface Exercise {
   description_courte: string | null;
   duree_moyenne: string | null;
   effort_cognitif: string | null;
+  color?: string | null;
+  symptomes?: string[] | null;
 }
 
 export interface ExerciseCompletion {
@@ -90,4 +102,53 @@ export interface Recommendation {
   practitioner_name: string | null;
   is_active: boolean;
   created_at: string;
+}
+
+export type OnboardingQuestionKey =
+  | 'q1_goals'
+  | 'q2_impact'
+  | 'q3_moments'
+  | 'q4_experience'
+  | 'q5_tone';
+
+export interface OnboardingQuestion {
+  key: OnboardingQuestionKey;
+  display_order: number;
+  max_choices: number;
+}
+
+export interface OnboardingOption {
+  question_key: OnboardingQuestionKey;
+  option_key: string;
+  label_fr: string;
+  label_en: string;
+  display_order: number;
+  is_exclusive: boolean;
+  suggestable: boolean;
+}
+
+export interface PatientSeatSuggestion {
+  patient_seat_id: string;
+  question_key: string;
+  option_key: string;
+}
+
+/**
+ * Checks if a practitioner profile is complete according to P01.
+ * Description, city, and at least one language are required.
+ * Formations are required in strict mode, but can be skipped in demo mode.
+ */
+export function isPractitionerProfileComplete(
+  p: Practitioner | null | undefined,
+  strict = false,
+): boolean {
+  if (!p) return false;
+  const hasName = Boolean(p.first_name?.trim() && p.last_name?.trim());
+  if (!hasName) return false;
+  if (!strict) return true; // Demo mode: Name is sufficient
+  const hasDesc = Boolean(p.description?.trim());
+  const hasCity = Boolean(p.city?.trim());
+  const hasLang = Array.isArray(p.languages) && p.languages.some((l) => l.trim().length > 0);
+  const hasEdu = Array.isArray(p.education) && p.education.some((e) => e.title?.trim() && e.institution?.trim());
+  return hasDesc && hasCity && hasLang && hasEdu;
 }

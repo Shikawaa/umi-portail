@@ -13,12 +13,14 @@ function Tile({
   children: React.ReactNode;
 }) {
   return (
-    <Card className="p-5">
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-sm text-muted-foreground">{label}</span>
-        <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+    <Card className="p-6 rounded-2xl border border-border/80 shadow-2xs hover:shadow-xs hover:border-gray-300 transition-all">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm font-medium text-muted-foreground">{label}</span>
+        <div className="w-9 h-9 rounded-xl bg-muted/60 flex items-center justify-center text-muted-foreground shrink-0">
+          <Icon className="h-5 w-5" />
+        </div>
       </div>
-      <div className="mt-2">{children}</div>
+      <div className="mt-3">{children}</div>
     </Card>
   );
 }
@@ -54,34 +56,36 @@ export function PatientStats({
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
       <Tile label={labels.done} icon={CheckCircle2}>
-        <p className="text-3xl font-semibold tabular-nums text-foreground">
+        <p className="text-3xl font-bold tabular-nums text-foreground tracking-tight">
           {done}
         </p>
       </Tile>
 
-      <Card className="p-5">
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-sm text-muted-foreground">
+      <Card className="p-6 rounded-2xl border border-border/80 shadow-2xs hover:shadow-xs hover:border-gray-300 transition-all">
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-sm font-medium text-muted-foreground">
             {labels.explored}
           </span>
-          <Compass className="h-4 w-4 shrink-0 text-muted-foreground" />
+          <div className="w-9 h-9 rounded-xl bg-muted/60 flex items-center justify-center text-muted-foreground shrink-0">
+            <Compass className="h-5 w-5" />
+          </div>
         </div>
-        <div className="mt-2 flex items-center gap-3">
+        <div className="mt-3 flex items-center gap-3.5">
           <ProgressRing value={explored} total={libraryTotal} />
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm font-medium text-muted-foreground">
             {labels.exploredOf}
           </span>
         </div>
       </Card>
 
       <Tile label={labels.activeDays} icon={CalendarDays}>
-        <p className="text-3xl font-semibold tabular-nums text-foreground">
+        <p className="text-3xl font-bold tabular-nums text-foreground tracking-tight">
           {activeDays}
         </p>
       </Tile>
 
       <Tile label={labels.lastActivity} icon={Clock}>
-        <p className="text-xl font-semibold text-foreground">{lastActivity}</p>
+        <p className="text-xl font-bold text-foreground">{lastActivity}</p>
       </Tile>
     </div>
   );

@@ -9,6 +9,8 @@ import type { PatientSeat } from '@/lib/types';
 import { sendInviteEmail, type InviteEmailStatus } from '@/actions/email';
 import { LOCALE_COOKIE, defaultLocale, isLocale } from '@/i18n/request';
 
+import { getSiteUrl } from '@/lib/site';
+
 function currentLocale(): string {
   const value = cookies().get(LOCALE_COOKIE)?.value;
   return isLocale(value) ? value : defaultLocale;
@@ -17,12 +19,16 @@ function currentLocale(): string {
 export interface CreateInvitationData {
   seat: PatientSeat;
   emailStatus: InviteEmailStatus;
+  joinUrl: string;
 }
 
 export async function createInvitation(input: {
-  label?: string;
+  label: string;
   email?: string;
   sendEmail?: boolean;
+  firstExerciseId: number;
+  personalNote?: string;
+  suggestions?: Record<string, string[]>;
 }): Promise<ActionResult<CreateInvitationData>> {
   const supabase = createClient();
   const label = input.label?.trim() || null;
@@ -37,6 +43,64 @@ export async function createInvitation(input: {
 
   const seat = data as PatientSeat;
 
+  // 1. Fetch current practitioner info to attach their name to the recommendation
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  let practitionerName: string | null = null;
+  if (user) {
+    const { data: practitioner } = await supabase
+      .from('practitioners')
+      .select('first_name, last_name')
+      .eq('id', user.id)
+      .maybeSingle();
+    practitionerName =
+      [practitioner?.first_name, practitioner?.last_name]
+        .filter(Boolean)
+        .join(' ') || null;
+  }
+
+  // 2. Insert mandatory first exercise recommendation
+  const note = input.personalNote?.trim() || null;
+  await supabase.from('recommendations').insert({
+    patient_seat_id: seat.id,
+    exercise_id: String(input.firstExerciseId),
+    is_active: true,
+    practitioner_name: practitionerName,
+    note,
+    note_en: note,
+  });
+
+  // 3. Insert optional questionnaire suggestions
+  if (input.suggestions) {
+    const suggestionRows: {
+      patient_seat_id: string;
+      question_key: string;
+      option_key: string;
+    }[] = [];
+    for (const [qKey, opts] of Object.entries(input.suggestions)) {
+      if (Array.isArray(opts)) {
+        for (const optKey of opts) {
+          if (optKey) {
+            suggestionRows.push({
+              patient_seat_id: seat.id,
+              question_key: qKey,
+              option_key: optKey,
+            });
+          }
+        }
+      }
+    }
+
+    if (suggestionRows.length > 0) {
+      await supabase.from('patient_seat_suggestions').insert(suggestionRows);
+    }
+  }
+
+  // 4. Build join link
+  const siteUrl = getSiteUrl();
+  const joinUrl = `${siteUrl}/join?code=${seat.invite_code}`;
+
   let emailStatus: InviteEmailStatus = 'skipped';
   if (input.sendEmail && email && seat.invite_code) {
     emailStatus = await sendInviteEmail({
@@ -44,12 +108,14 @@ export async function createInvitation(input: {
       code: seat.invite_code,
       expiresAt: seat.expires_at,
       locale: currentLocale(),
+      link: joinUrl,
+      practitionerName,
     });
   }
 
   revalidatePath('/patients');
   revalidatePath('/dashboard');
-  return { ok: true, data: { seat, emailStatus } };
+  return { ok: true, data: { seat, emailStatus, joinUrl } };
 }
 
 export async function regenerateCode(input: {

@@ -105,18 +105,18 @@ export function PatientsView({
   }
 
   const inviteButton = (
-    <Button>
+    <Button className="h-11 px-5 text-sm gap-2 rounded-xl shadow-xs">
       <UserPlus className="h-4 w-4" />
       {t('invite')}
     </Button>
   );
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6">
+    <div className="mx-auto max-w-6xl space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-foreground">{t('title')}</h2>
-          <p className="text-sm text-muted-foreground">{t('subtitle')}</p>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">{t('title')}</h2>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">{t('subtitle')}</p>
         </div>
         <InviteDialog trigger={inviteButton} />
       </div>
@@ -129,7 +129,7 @@ export function PatientsView({
           action={
             <InviteDialog
               trigger={
-                <Button>
+                <Button className="h-11 px-5 text-sm gap-2 rounded-xl shadow-xs">
                   <UserPlus className="h-4 w-4" />
                   {t('empty.cta')}
                 </Button>
@@ -141,11 +141,11 @@ export function PatientsView({
         <>
           {patients.length > 0 ? (
             <>
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="relative min-w-[200px] flex-1">
-                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <div className="flex flex-wrap items-center gap-3.5">
+                <div className="relative min-w-[220px] flex-1">
+                  <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
-                    className="pl-9"
+                    className="pl-10 h-11 text-sm rounded-xl"
                     placeholder={t('search.placeholder')}
                     aria-label={t('search.placeholder')}
                     value={search}
@@ -153,7 +153,7 @@ export function PatientsView({
                   />
                 </div>
                 <select
-                  className="h-10 rounded-md border border-input bg-background px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="h-11 rounded-xl border border-input bg-background px-4 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary shadow-2xs cursor-pointer transition-colors"
                   aria-label={t('filters.assiduityLabel')}
                   value={assiduity}
                   onChange={(e) =>
@@ -168,7 +168,7 @@ export function PatientsView({
                   ))}
                 </select>
                 <select
-                  className="h-10 rounded-md border border-input bg-background px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="h-11 rounded-xl border border-input bg-background px-4 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary shadow-2xs cursor-pointer transition-colors"
                   aria-label={t('filters.statusLabel')}
                   value={status}
                   onChange={(e) =>
@@ -185,28 +185,26 @@ export function PatientsView({
               </div>
 
               {filtered.length === 0 ? (
-                <div className="rounded-lg border border-border bg-card px-6 py-12 text-center text-sm text-muted-foreground">
+                <div className="rounded-2xl border border-border/80 bg-card px-6 py-14 text-center text-sm text-muted-foreground shadow-2xs">
                   {t('noResults')}
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {groups.map(({ key, rows }) => (
-                    <section key={key} className="space-y-2">
-                      <div className="flex items-center gap-2 px-1">
-                        <h3 className="text-sm font-medium text-foreground">
+                    <section key={key} className="space-y-3">
+                      <div className="flex items-center gap-2.5 px-1">
+                        <h3 className="text-base font-bold text-foreground">
                           {t(`groups.${key}`)}
                         </h3>
-                        <span className="text-xs tabular-nums text-muted-foreground">
+                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-muted text-muted-foreground">
                           {rows.length}
                         </span>
                       </div>
-                      <div className="rounded-lg border border-border bg-card">
-                        <PatientTable
-                          patients={rows}
-                          onRevoke={(p) => setRevokeTarget(p)}
-                          onDelete={(p) => setDeleteTarget(p)}
-                        />
-                      </div>
+                      <PatientTable
+                        patients={rows}
+                        onRevoke={(p) => setRevokeTarget(p)}
+                        onDelete={(p) => setDeleteTarget(p)}
+                      />
                     </section>
                   ))}
                 </div>

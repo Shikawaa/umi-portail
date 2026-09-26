@@ -41,53 +41,62 @@ export function PatientTable({
   const router = useRouter();
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className="hover:bg-transparent">
-          <TableHead>{t('table.label')}</TableHead>
-          <TableHead>{t('table.seatStatus')}</TableHead>
-          <TableHead>{t('table.assiduity')}</TableHead>
-          <TableHead>{t('table.lastActivity')}</TableHead>
-          <TableHead className="text-right">{t('table.completions')}</TableHead>
-          <TableHead className="w-12">
-            <span className="sr-only">{tCommon('actions')}</span>
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {patients.map((p) => {
-          const last = formatDate(p.last_completed_at, locale);
-          return (
-            <TableRow
-              key={p.seat_id}
-              className="cursor-pointer"
-              onClick={() => router.push(`/patients/${p.seat_id}`)}
-            >
-              <TableCell className="font-medium text-foreground">
-                <Link
-                  href={`/patients/${p.seat_id}`}
-                  className="hover:underline"
+    <div className="rounded-2xl border border-border/80 bg-card overflow-hidden shadow-2xs">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead>{t('table.label')}</TableHead>
+            <TableHead>{t('table.seatStatus')}</TableHead>
+            <TableHead>{t('table.assiduity')}</TableHead>
+            <TableHead>{t('table.lastActivity')}</TableHead>
+            <TableHead className="text-right">{t('table.completions')}</TableHead>
+            <TableHead className="w-14">
+              <span className="sr-only">{tCommon('actions')}</span>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {patients.map((p) => {
+            const last = formatDate(p.last_completed_at, locale);
+            const initials = p.label
+              ? p.label.replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase() || '?'
+              : '?';
+            return (
+              <TableRow
+                key={p.seat_id}
+                className="cursor-pointer group"
+                onClick={() => router.push(`/patients/${p.seat_id}`)}
+              >
+                <TableCell className="font-semibold text-foreground">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      {initials}
+                    </span>
+                    <Link
+                      href={`/patients/${p.seat_id}`}
+                      className="group-hover:text-primary transition-colors text-sm font-semibold"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {p.label || t('row.noLabel')}
+                    </Link>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <SeatStatusBadge status={p.status} resumable={isResumable(p)} />
+                </TableCell>
+                <TableCell>
+                  <AssiduityBadge assiduity={p.assiduity} />
+                </TableCell>
+                <TableCell className="text-sm text-muted-foreground">
+                  {last ?? tCommon('none')}
+                </TableCell>
+                <TableCell className="text-right tabular-nums text-sm font-bold text-foreground">
+                  {p.completions_total}
+                </TableCell>
+                <TableCell
+                  className="text-right"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {p.label || t('row.noLabel')}
-                </Link>
-              </TableCell>
-              <TableCell>
-                <SeatStatusBadge status={p.status} resumable={isResumable(p)} />
-              </TableCell>
-              <TableCell>
-                <AssiduityBadge assiduity={p.assiduity} />
-              </TableCell>
-              <TableCell className="text-muted-foreground">
-                {last ?? tCommon('none')}
-              </TableCell>
-              <TableCell className="text-right tabular-nums text-foreground">
-                {p.completions_total}
-              </TableCell>
-              <TableCell
-                className="text-right"
-                onClick={(e) => e.stopPropagation()}
-              >
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -134,5 +143,6 @@ export function PatientTable({
         })}
       </TableBody>
     </Table>
-  );
+  </div>
+);
 }
