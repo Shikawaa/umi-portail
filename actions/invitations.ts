@@ -62,7 +62,7 @@ export async function createInvitation(input: {
 
   // 2. Insert mandatory first exercise recommendation
   const note = input.personalNote?.trim() || null;
-  await supabase.from('recommendations').insert({
+  const { error: recError } = await supabase.from('recommendations').insert({
     patient_seat_id: seat.id,
     exercise_id: String(input.firstExerciseId),
     is_active: true,
@@ -70,8 +70,13 @@ export async function createInvitation(input: {
     note,
     note_en: note,
   });
+  if (recError) {
+    console.error('Failed to insert recommendation:', recError);
+    return { ok: false, error: 'generic' };
+  }
 
   // 3. Insert optional questionnaire suggestions
+  console.log('Server received suggestions:', input.suggestions);
   if (input.suggestions) {
     const suggestionRows: {
       patient_seat_id: string;
@@ -93,13 +98,19 @@ export async function createInvitation(input: {
     }
 
     if (suggestionRows.length > 0) {
-      await supabase.from('patient_seat_suggestions').insert(suggestionRows);
+      const { error: suggestionsError } = await supabase.from('patient_seat_suggestions').insert(suggestionRows);
+      if (suggestionsError) {
+        console.error('Failed to insert suggestions:', suggestionsError);
+        return { ok: false, error: 'generic' }; // Fallback error
+      }
     }
   }
 
   // 4. Build join link
-  const siteUrl = getSiteUrl();
-  const joinUrl = `${siteUrl}/join?code=${seat.invite_code}`;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const joinUrl = supabaseUrl
+    ? `${supabaseUrl}/functions/v1/join?c=${seat.invite_code}`
+    : `${getSiteUrl()}/join?code=${seat.invite_code}`;
 
   let emailStatus: InviteEmailStatus = 'skipped';
   if (input.sendEmail && email && seat.invite_code) {

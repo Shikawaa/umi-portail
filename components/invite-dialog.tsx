@@ -114,6 +114,7 @@ export function InviteDialog({ trigger }: { trigger: React.ReactNode }) {
     if (!label.trim() || !selectedExerciseId) return;
 
     setError(null);
+    console.log('handleFinalSubmit suggestions:', suggestions);
     startTransition(async () => {
       const res = await createInvitation({
         label,
