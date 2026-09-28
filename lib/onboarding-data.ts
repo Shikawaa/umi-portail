@@ -110,7 +110,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q1_goals',
-    option_key: 'relationships',
+    option_key: 'relations',
     label_fr: 'Mieux vivre mes relations',
     label_en: 'Improve my relationships',
     display_order: 6,
@@ -128,7 +128,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q1_goals',
-    option_key: 'self_care',
+    option_key: 'self_time',
     label_fr: 'Prendre du temps pour moi',
     label_en: 'Take time for myself',
     display_order: 8,
@@ -148,7 +148,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   // Q2 Impact (max 1 choice)
   {
     question_key: 'q2_impact',
-    option_key: 'rarely',
+    option_key: 'very_low',
     label_fr: 'Très peu, ça me gêne rarement',
     label_en: 'Very little, it rarely bothers me',
     display_order: 1,
@@ -157,7 +157,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q2_impact',
-    option_key: 'sometimes',
+    option_key: 'low',
     label_fr: 'Un peu, ça me gêne par moments',
     label_en: 'A little, it bothers me at times',
     display_order: 2,
@@ -175,7 +175,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q2_impact',
-    option_key: 'often',
+    option_key: 'high',
     label_fr: 'Beaucoup, ça rend souvent mon quotidien difficile',
     label_en: 'A lot, it often makes daily life hard',
     display_order: 4,
@@ -184,7 +184,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q2_impact',
-    option_key: 'overwhelming',
+    option_key: 'very_high',
     label_fr: 'Énormément, ça prend presque toute la place',
     label_en: 'Enormously, it takes up almost all the space',
     display_order: 5,
@@ -204,7 +204,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   // Q3 Moments (max 3 choices)
   {
     question_key: 'q3_moments',
-    option_key: 'morning',
+    option_key: 'waking',
     label_fr: 'Au réveil',
     label_en: 'Upon waking up',
     display_order: 1,
@@ -213,7 +213,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q3_moments',
-    option_key: 'work_studies',
+    option_key: 'work_study',
     label_fr: 'Au travail ou pendant mes études',
     label_en: 'At work or during my studies',
     display_order: 2,
@@ -231,7 +231,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q3_moments',
-    option_key: 'social',
+    option_key: 'interactions',
     label_fr: 'Dans mes échanges avec les autres',
     label_en: 'In interactions with others',
     display_order: 4,
@@ -240,7 +240,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q3_moments',
-    option_key: 'evening',
+    option_key: 'end_of_day',
     label_fr: 'En fin de journée',
     label_en: 'At the end of the day',
     display_order: 5,
@@ -305,7 +305,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q4_experience',
-    option_key: 'regular',
+    option_key: 'regularly',
     label_fr: 'J’en fais déjà régulièrement',
     label_en: 'I already do them regularly',
     display_order: 4,
@@ -343,7 +343,7 @@ export const ONBOARDING_OPTIONS_FALLBACK: OnboardingOption[] = [
   },
   {
     question_key: 'q5_tone',
-    option_key: 'calm_precise',
+    option_key: 'precise',
     label_fr: 'De façon posée, avec des explications précises',
     label_en: 'Calmly, with precise explanations',
     display_order: 4,
